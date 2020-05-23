@@ -28,7 +28,7 @@ import static dev.sapphic.backpackbaubles.asm.BackpackClassTransformer.BACKPACK_
 import static dev.sapphic.backpackbaubles.asm.BackpackClassTransformer.IS_BAUBLE_SLOT_EMPTY;
 
 final class BackpackItemVisitor extends ClassVisitor {
-    private static final Type SUPER = Type.getType("vazkii/arl/item/ItemModArmor");
+    private static final Type SUPER_CLASS = Type.getType("vazkii/arl/item/ItemModArmor");
 
     private static final Method IS_VALID_ARMOR = Method.getMethod(
         "boolean isValidArmor (" +
@@ -44,22 +44,27 @@ final class BackpackItemVisitor extends ClassVisitor {
     @Override
     public void visitEnd() {
         final GeneratorAdapter mg = new GeneratorAdapter(Opcodes.ACC_PUBLIC, IS_VALID_ARMOR, null, null, this);
-        final Label ret = mg.newLabel();
-        final Label end = mg.newLabel();
+
+        final Label ifeq = mg.newLabel();
+        final Label exit = mg.newLabel();
+
         mg.loadArg(2); // Entity
-        mg.invokeStatic(BACKPACK_BAUBLES, IS_BAUBLE_SLOT_EMPTY);
-        mg.ifZCmp(Opcodes.IFEQ, ret);
+        mg.invokeStatic(BackpackClassTransformer.BACKPACK_BAUBLES, BackpackClassTransformer.IS_BAUBLE_SLOT_EMPTY);
+        mg.ifZCmp(Opcodes.IFEQ, ifeq);
         mg.loadThis();
         mg.loadArgs(); // ItemStack, EntityEquipmentSlot, Entity
         // essentially invokeSpecial, GeneratorAdaptor lacks in this department
-        mg.invokeConstructor(SUPER, IS_VALID_ARMOR);
-        mg.ifZCmp(Opcodes.IFEQ, ret);
+        mg.invokeConstructor(SUPER_CLASS, IS_VALID_ARMOR);
+        mg.ifZCmp(Opcodes.IFEQ, ifeq);
         mg.push(true);
-        mg.goTo(end);
-        mg.mark(ret);
+        mg.goTo(exit);
+
+        mg.mark(ifeq);
         mg.push(false);
-        mg.mark(end);
+
+        mg.mark(exit);
         mg.returnValue();
+
         mg.endMethod();
         super.visitEnd();
     }

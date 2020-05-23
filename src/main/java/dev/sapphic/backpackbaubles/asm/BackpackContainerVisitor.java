@@ -23,9 +23,6 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.GeneratorAdapter;
 
-import static dev.sapphic.backpackbaubles.asm.BackpackClassTransformer.BACKPACK_BAUBLES;
-import static dev.sapphic.backpackbaubles.asm.BackpackClassTransformer.GET_BACKPACK_STACK;
-
 final class BackpackContainerVisitor extends ClassVisitor {
     private static final Type ITEM_STACK = Type.getType("net/minecraft/item/ItemStack");
 
@@ -42,7 +39,7 @@ final class BackpackContainerVisitor extends ClassVisitor {
                 public void visitMethodInsn(final int opcode, final String owner, final String name, final String desc, final boolean itf) {
                     if (BackpackClassTransformer.isItemStackGetItem(opcode, owner, name, desc)) {
                         this.loadArg(0); // EntityPlayer
-                        this.invokeStatic(BACKPACK_BAUBLES, GET_BACKPACK_STACK);
+                        this.invokeStatic(BackpackClassTransformer.BACKPACK_BAUBLES, BackpackClassTransformer.GET_BACKPACK_STACK);
                         this.storeLocal(5, ITEM_STACK);
                         this.loadLocal(5, ITEM_STACK);
                     }

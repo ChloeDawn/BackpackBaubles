@@ -23,9 +23,6 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.GeneratorAdapter;
 
-import static dev.sapphic.backpackbaubles.asm.BackpackClassTransformer.BACKPACK_BAUBLES;
-import static dev.sapphic.backpackbaubles.asm.BackpackClassTransformer.GET_BACKPACK_STACK;
-
 final class BackpackFeatureVisitor extends ClassVisitor {
     private static final Type LIVING_ENTITY = Type.getType("net/minecraft/entity/EntityLiving");
     private static final Type ITEM_STACK = Type.getType("net/minecraft/item/ItemStack");
@@ -45,7 +42,7 @@ final class BackpackFeatureVisitor extends ClassVisitor {
                         public void visitMethodInsn(final int opcode, final String owner, final String name, final String desc, final boolean itf) {
                             if (BackpackClassTransformer.isItemStackGetItem(opcode, owner, name, desc)) {
                                 this.loadLocal(1, LIVING_ENTITY);
-                                this.invokeStatic(BACKPACK_BAUBLES, GET_BACKPACK_STACK);
+                                this.invokeStatic(BackpackClassTransformer.BACKPACK_BAUBLES, BackpackClassTransformer.GET_BACKPACK_STACK);
                                 this.storeLocal(2, ITEM_STACK);
                                 this.loadLocal(2, ITEM_STACK);
                             }
@@ -58,7 +55,7 @@ final class BackpackFeatureVisitor extends ClassVisitor {
                         public void visitVarInsn(final int opcode, final int var) {
                             if (opcode == Opcodes.ALOAD && var == 1) {
                                 this.loadLocal(2, LIVING_ENTITY);
-                                this.invokeStatic(BACKPACK_BAUBLES, GET_BACKPACK_STACK);
+                                this.invokeStatic(BackpackClassTransformer.BACKPACK_BAUBLES, BackpackClassTransformer.GET_BACKPACK_STACK);
                                 this.storeLocal(3, ITEM_STACK);
                                 this.loadLocal(3, ITEM_STACK);
                             }
