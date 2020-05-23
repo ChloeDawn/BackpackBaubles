@@ -143,7 +143,7 @@ public final class BackpackBaubles extends DummyModContainer {
     }
 
     @Subscribe
-    public void postInit(final FMLPostInitializationEvent event) {
+    public void setupRenderLayers(final FMLPostInitializationEvent event) {
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             //noinspection TrivialFunctionalExpressionUsage
             ((Supplier<Runnable>) () -> () -> FMLClientHandler.instance().getClient()
