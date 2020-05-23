@@ -103,19 +103,7 @@ public final class BackpackBaubles extends DummyModContainer {
     };
 
     public BackpackBaubles() {
-        super(new ModMetadata());
-        final ModMetadata mod = this.getMetadata();
-        mod.modId = ID;
-        mod.name = "Backpack Baubles";
-        mod.version = "$version";
-        mod.description = "Allows for Quark's backpack to be equipped in Baubles' body slot";
-        mod.url = "https://github.com/ChloeDawn/BackpackBaubles";
-        mod.authorList = ImmutableList.of("Chloe Dawn");
-        final DependencyInfo info = new DependencyParser(ID, FMLCommonHandler.instance().getSide())
-            .parseDependencies("required-after:quark@[r1.6-179,);required-after:baubles@[1.5.2,)");
-        mod.requiredMods = info.requirements;
-        mod.dependencies = info.dependencies;
-        mod.dependants = info.dependants;
+        super(createModMetadata());
     }
 
     public static ItemStack getBackpackStack(final ItemStack chestStack, final EntityLivingBase entity) {
@@ -135,6 +123,22 @@ public final class BackpackBaubles extends DummyModContainer {
             return !(handler.getStackInSlot(BAUBLE_BODY_SLOT).getItem() instanceof ItemBackpack);
         }
         return true;
+    }
+
+    private static ModMetadata createModMetadata() {
+        final ModMetadata metdata = new ModMetadata();
+        metdata.modId = ID;
+        metdata.name = "Backpack Baubles";
+        metdata.version = "$version";
+        metdata.description = "Allows for Quark's backpack to be equipped in Baubles' body slot";
+        metdata.url = "https://github.com/ChloeDawn/BackpackBaubles";
+        metdata.authorList = ImmutableList.of("Chloe Dawn");
+        final DependencyInfo info = new DependencyParser(ID, FMLCommonHandler.instance().getSide())
+            .parseDependencies("required-after:quark@[r1.6-179,);required-after:baubles@[1.5.2,)");
+        metdata.requiredMods = info.requirements;
+        metdata.dependencies = info.dependencies;
+        metdata.dependants = info.dependants;
+        return metdata;
     }
 
     @Subscribe
