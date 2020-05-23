@@ -23,7 +23,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import dev.sapphic.backpackbaubles.client.BackpackRenderLayer;
+import dev.sapphic.backpackbaubles.client.BackpackLayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -152,7 +152,7 @@ public final class BackpackBaubles extends DummyModContainer {
             //noinspection TrivialFunctionalExpressionUsage
             ((Supplier<Runnable>) () -> () -> FMLClientHandler.instance().getClient()
                 .getRenderManager().getSkinMap().values().forEach(renderer ->
-                    renderer.addLayer(new BackpackRenderLayer(renderer)))).get().run();
+                    renderer.addLayer(new BackpackLayer(renderer)))).get().run();
         }
     }
 
