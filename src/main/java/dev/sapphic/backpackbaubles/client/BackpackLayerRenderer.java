@@ -30,14 +30,14 @@ import vazkii.quark.base.lib.LibMisc;
 import vazkii.quark.oddities.client.model.ModelBackpack;
 import vazkii.quark.oddities.item.ItemBackpack;
 
-public final class BackpackRenderLayer implements LayerRenderer<AbstractClientPlayer> {
+public final class BackpackLayerRenderer implements LayerRenderer<AbstractClientPlayer> {
     private static final ResourceLocation WORN_TEXTURE = new ResourceLocation(LibMisc.MOD_ID, "textures/misc/backpack_worn.png");
     private static final ResourceLocation WORN_OVERLAY_TEXTURE = new ResourceLocation(LibMisc.MOD_ID, "textures/misc/backpack_worn_overlay.png");
 
     private final ModelBackpack model = new ModelBackpack();
     private final RenderPlayer renderer;
 
-    public BackpackRenderLayer(final RenderPlayer renderer) {
+    public BackpackLayerRenderer(final RenderPlayer renderer) {
         this.renderer = renderer;
         this.model.setVisible(false);
         this.model.bipedBody.showModel = true;
