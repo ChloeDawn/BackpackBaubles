@@ -26,7 +26,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.Map;
 
 @SortingIndex(1000)
-@DependsOn("quark")
+@DependsOn({ "quark", "baubles" })
 @MCVersion("1.12.2")
 @TransformerExclusions({
     "dev.sapphic.backpackbaubles",
