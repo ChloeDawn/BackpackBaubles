@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'net.minecraftforge.gradle.forge' version '2.3-SNAPSHOT'
+    id 'com.wynprice.cursemaven' version '2.1.4'
+}
+
+group = 'dev.sapphic'
+version = '0.1.0'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+minecraft {
+    version = '1.12.2-14.23.5.2847'
+    mappings = 'stable_39'
+    runDir = 'run'
+    coreMod = 'dev.sapphic.backpackbaubles.asm.BackpackBaublesPlugin'
+    clientJvmArgs = ['-Dfml.coreMods.load=' + coreMod]
+    serverJvmArgs = ['-Dfml.coreMods.load=' + coreMod]
+    replaceIn 'dev.sapphic.backpackbaubles.BackpackBaubles'
+    replace '$BACKPACKBAUBLESVERSION', project.version // FIXME
+}
+
+repositories {
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://maven.blamejared.com' }
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:19.0.0'
+    implementation 'org.checkerframework:checker-qual:3.3.0'
+    deobfCompile curse.resolve('baubles', '2518667')
+    deobfCompile 'vazkii.quark:Quark:r1.6-180.7'
+    deobfCompile 'vazkii.autoreglib:AutoRegLib:1.3-33.34'
+    deobfCompile curse.resolve('quark-oddities', '2604798')
+}
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.fork = true
+    options.verbose = true
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-Xlint:all'
+}
