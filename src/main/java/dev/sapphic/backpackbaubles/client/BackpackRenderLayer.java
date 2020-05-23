@@ -62,15 +62,14 @@ public final class BackpackRenderLayer implements LayerRenderer<AbstractClientPl
         this.model.setModelAttributes(this.renderer.getMainModel());
         this.model.setLivingAnimations(player, limbSwing, limbSwingAmount, delta);
 
-        if (backpack.hasOverlay(stack)) {
-            final int color = backpack.getColor(stack);
-            final float red = (color >> 16 & 255) / 255.0F;
-            final float green = (color >> 8 & 255) / 255.0F;
-            final float blue = (color & 255) / 255.0F;
-            this.renderer.bindTexture(WORN_TEXTURE);
-            GlStateManager.color(1.0F * red, 1.0F * green, 1.0F * blue, 1.0F);
-            this.model.render(player, limbSwing, limbSwingAmount, age, yaw, pitch, scale);
-        }
+        final int color = backpack.getColor(stack);
+        final float red = (color >> 16 & 255) / 255.0F;
+        final float green = (color >> 8 & 255) / 255.0F;
+        final float blue = (color & 255) / 255.0F;
+
+        this.renderer.bindTexture(WORN_TEXTURE);
+        GlStateManager.color(1.0F * red, 1.0F * green, 1.0F * blue, 1.0F);
+        this.model.render(player, limbSwing, limbSwingAmount, age, yaw, pitch, scale);
 
         this.renderer.bindTexture(WORN_OVERLAY_TEXTURE);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
