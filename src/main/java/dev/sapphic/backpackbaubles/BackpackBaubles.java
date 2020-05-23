@@ -107,7 +107,7 @@ public final class BackpackBaubles extends DummyModContainer {
         final ModMetadata mod = this.getMetadata();
         mod.modId = ID;
         mod.name = "Backpack Baubles";
-        mod.version = "$BACKPACKBAUBLESVERSION";
+        mod.version = "$version";
         mod.description = "Allows for Quark's backpack to be equipped in Baubles' body slot";
         mod.url = "https://github.com/ChloeDawn/BackpackBaubles";
         mod.authorList = ImmutableList.of("Chloe Dawn");
