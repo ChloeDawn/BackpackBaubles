@@ -26,7 +26,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import dev.sapphic.backpackbaubles.client.BackpackRenderLayer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -53,7 +52,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.versioning.ArtifactVersion;
 import net.minecraftforge.fml.common.versioning.DependencyParser;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import vazkii.quark.oddities.client.model.ModelBackpack;
@@ -61,6 +59,7 @@ import vazkii.quark.oddities.item.ItemBackpack;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public final class BackpackBaubles extends DummyModContainer {
     public static final String ID = "backpackbaubles";
@@ -145,10 +144,13 @@ public final class BackpackBaubles extends DummyModContainer {
     }
 
     @Subscribe
-    @SideOnly(Side.CLIENT)
-    public void setupRenderLayers(final FMLPostInitializationEvent event) {
-        for (final RenderPlayer renderer : Minecraft.getMinecraft().getRenderManager().getSkinMap().values()) {
-            renderer.addLayer(new BackpackRenderLayer<>(renderer, new ModelBackpack()));
+    public void postInit(final FMLPostInitializationEvent event) {
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+            //noinspection TrivialFunctionalExpressionUsage
+            ((Supplier<Runnable>) () -> () -> {
+                Minecraft.getMinecraft().getRenderManager().getSkinMap().values().forEach(renderer ->
+                    renderer.addLayer(new BackpackRenderLayer<>(renderer, new ModelBackpack())));
+            }).get().run();
         }
     }
 
