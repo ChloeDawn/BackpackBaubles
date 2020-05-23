@@ -209,6 +209,10 @@ public final class BackpackBaubles extends DummyModContainer {
 
     @Override
     public List<String> getOwnedPackages() {
-        return ImmutableList.of("dev.sapphic.backpackbaubles", "dev.sapphic.backpackbaubles.asm");
+        return ImmutableList.of(
+            "dev.sapphic.backpackbaubles",
+            "dev.sapphic.backpackbaubles.asm",
+            "dev.sapphic.backpackbaubles.client"
+        );
     }
 }

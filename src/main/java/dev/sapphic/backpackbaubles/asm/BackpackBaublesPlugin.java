@@ -28,7 +28,11 @@ import java.util.Map;
 @SortingIndex(1000)
 @DependsOn("quark")
 @MCVersion("1.12.2")
-@TransformerExclusions({ "dev.sapphic.backpackbaubles", "dev.sapphic.backpackbaubles.asm" })
+@TransformerExclusions({
+    "dev.sapphic.backpackbaubles",
+    "dev.sapphic.backpackbaubles.asm",
+    "dev.sapphic.backpackbaubles.client"
+})
 public final class BackpackBaublesPlugin implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {
