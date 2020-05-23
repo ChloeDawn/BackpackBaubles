@@ -65,7 +65,7 @@ import java.util.Set;
 public final class BackpackBaubles extends DummyModContainer {
     public static final String ID = "backpackbaubles";
 
-    private static final int BAUBLE_BODY_SLOT = 5;
+    public static final int BAUBLE_BODY_SLOT = 5;
 
     private static final IBauble BACKPACK_BAUBLE = new IBauble() {
         @Override

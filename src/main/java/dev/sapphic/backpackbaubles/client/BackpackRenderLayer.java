@@ -17,6 +17,7 @@
 package dev.sapphic.backpackbaubles.client;
 
 import baubles.api.BaublesApi;
+import dev.sapphic.backpackbaubles.BackpackBaubles;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
@@ -45,7 +46,7 @@ public final class BackpackRenderLayer<T extends ModelBiped> implements LayerRen
 
     @Override
     public void doRenderLayer(final AbstractClientPlayer player, final float limbSwing, final float limbSwingAmount, final float delta, final float age, final float yaw, final float pitch, final float scale) {
-        final ItemStack stack = BaublesApi.getBaublesHandler(player).getStackInSlot(5);
+        final ItemStack stack = BaublesApi.getBaublesHandler(player).getStackInSlot(BackpackBaubles.BAUBLE_BODY_SLOT);
         if (stack.getItem() instanceof ItemBackpack) {
             this.renderBackpack(stack, player, limbSwing, limbSwingAmount, delta, age, yaw, pitch, scale);
         }
