@@ -114,7 +114,7 @@ public final class BackpackBaubles extends DummyModContainer {
         mod.authorList = ImmutableList.of("Chloe Dawn");
         final DependencyParser.DependencyInfo info = new DependencyParser(
             ID, FMLCommonHandler.instance().getSide()
-        ).parseDependencies("required-after:quark@[r1.6-180,)");
+        ).parseDependencies("required-after:quark@[r1.6-179,)");
         mod.requiredMods = info.requirements;
         mod.dependencies = info.dependencies;
         mod.dependants = info.dependants;
