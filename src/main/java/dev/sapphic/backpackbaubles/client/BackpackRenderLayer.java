@@ -19,7 +19,6 @@ package dev.sapphic.backpackbaubles.client;
 import baubles.api.BaublesApi;
 import dev.sapphic.backpackbaubles.BackpackBaubles;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
@@ -28,18 +27,18 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import vazkii.quark.base.lib.LibMisc;
+import vazkii.quark.oddities.client.model.ModelBackpack;
 import vazkii.quark.oddities.item.ItemBackpack;
 
-public final class BackpackRenderLayer<T extends ModelBiped> implements LayerRenderer<AbstractClientPlayer> {
+public final class BackpackRenderLayer implements LayerRenderer<AbstractClientPlayer> {
     private static final ResourceLocation WORN_TEXTURE = new ResourceLocation(LibMisc.MOD_ID, "textures/misc/backpack_worn.png");
     private static final ResourceLocation WORN_OVERLAY_TEXTURE = new ResourceLocation(LibMisc.MOD_ID, "textures/misc/backpack_worn_overlay.png");
 
+    private final ModelBackpack model = new ModelBackpack();
     private final RenderPlayer renderer;
-    private final T model;
 
-    public BackpackRenderLayer(final RenderPlayer renderer, final T model) {
+    public BackpackRenderLayer(final RenderPlayer renderer) {
         this.renderer = renderer;
-        this.model = model;
         this.model.setVisible(false);
         this.model.bipedBody.showModel = true;
     }
@@ -58,11 +57,13 @@ public final class BackpackRenderLayer<T extends ModelBiped> implements LayerRen
     }
 
     private void renderBackpack(final ItemStack stack, final AbstractClientPlayer player, final float limbSwing, final float limbSwingAmount, final float delta, final float age, final float yaw, final float pitch, final float scale) {
+        final ItemArmor backpack = (ItemArmor) stack.getItem();
+
         this.model.setModelAttributes(this.renderer.getMainModel());
         this.model.setLivingAnimations(player, limbSwing, limbSwingAmount, delta);
 
-        if (((ItemArmor) stack.getItem()).hasOverlay(stack)) {
-            final int color = ((ItemArmor) stack.getItem()).getColor(stack);
+        if (backpack.hasOverlay(stack)) {
+            final int color = backpack.getColor(stack);
             final float red = (color >> 16 & 255) / 255.0F;
             final float green = (color >> 8 & 255) / 255.0F;
             final float blue = (color & 255) / 255.0F;
