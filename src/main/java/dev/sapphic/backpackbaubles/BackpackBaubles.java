@@ -19,7 +19,6 @@ package dev.sapphic.backpackbaubles;
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import baubles.api.IBauble;
-import baubles.api.cap.IBaublesItemHandler;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
@@ -53,6 +52,7 @@ import net.minecraftforge.fml.common.versioning.ArtifactVersion;
 import net.minecraftforge.fml.common.versioning.DependencyParser;
 import net.minecraftforge.fml.common.versioning.DependencyParser.DependencyInfo;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.items.IItemHandler;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import vazkii.quark.oddities.item.ItemBackpack;
@@ -108,7 +108,7 @@ public final class BackpackBaubles extends DummyModContainer {
 
     public static ItemStack getBackpackStack(final ItemStack chestStack, final EntityLivingBase entity) {
         if (!(chestStack.getItem() instanceof ItemBackpack) && entity instanceof EntityPlayer) {
-            final IBaublesItemHandler handler = BaublesApi.getBaublesHandler((EntityPlayer) entity);
+            final IItemHandler handler = BaublesApi.getBaublesHandler((EntityPlayer) entity);
             final ItemStack baubleStack = handler.getStackInSlot(BAUBLE_BODY_SLOT);
             if (baubleStack.getItem() instanceof ItemBackpack) {
                 return baubleStack;
@@ -119,7 +119,7 @@ public final class BackpackBaubles extends DummyModContainer {
 
     public static boolean isBaubleSlotEmpty(final Entity entity) {
         if (entity instanceof EntityPlayer) {
-            final IBaublesItemHandler handler = BaublesApi.getBaublesHandler((EntityPlayer) entity);
+            final IItemHandler handler = BaublesApi.getBaublesHandler((EntityPlayer) entity);
             return !(handler.getStackInSlot(BAUBLE_BODY_SLOT).getItem() instanceof ItemBackpack);
         }
         return true;
@@ -173,7 +173,7 @@ public final class BackpackBaubles extends DummyModContainer {
         EnumActionResult result = EnumActionResult.FAIL;
         final EntityPlayer player = event.getEntityPlayer();
         if (!(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() instanceof ItemBackpack)) {
-            final IBaublesItemHandler handler = BaublesApi.getBaublesHandler(player);
+            final IItemHandler handler = BaublesApi.getBaublesHandler(player);
             final ItemStack remainder = handler.insertItem(BAUBLE_BODY_SLOT, stack.copy(), true);
             if (remainder.getCount() < stack.getCount()) {
                 player.playSound(((ItemArmor) stack.getItem()).getArmorMaterial().getSoundEvent(), 1.0F, 1.0F);
