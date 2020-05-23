@@ -17,7 +17,7 @@ minecraft {
     clientJvmArgs = ['-Dfml.coreMods.load=' + coreMod]
     serverJvmArgs = ['-Dfml.coreMods.load=' + coreMod]
     replaceIn 'dev/sapphic/backpackbaubles/BackpackBaubles.java'
-    replace '$version', project.version // FIXME
+    replace '$version', project.version
 }
 
 repositories {
