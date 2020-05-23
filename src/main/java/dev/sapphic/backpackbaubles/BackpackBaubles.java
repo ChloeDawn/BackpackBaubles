@@ -51,6 +51,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.versioning.ArtifactVersion;
 import net.minecraftforge.fml.common.versioning.DependencyParser;
+import net.minecraftforge.fml.common.versioning.DependencyParser.DependencyInfo;
 import net.minecraftforge.fml.relauncher.Side;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -110,9 +111,8 @@ public final class BackpackBaubles extends DummyModContainer {
         mod.description = "Allows for Quark's backpack to be equipped in Baubles' body slot";
         mod.url = "https://github.com/ChloeDawn/BackpackBaubles";
         mod.authorList = ImmutableList.of("Chloe Dawn");
-        final DependencyParser.DependencyInfo info = new DependencyParser(
-            ID, FMLCommonHandler.instance().getSide()
-        ).parseDependencies("required-after:quark@[r1.6-179,)");
+        final DependencyInfo info = new DependencyParser(ID, FMLCommonHandler.instance().getSide())
+            .parseDependencies("required-after:quark@[r1.6-179,);required-after:baubles@[1.5.2,)");
         mod.requiredMods = info.requirements;
         mod.dependencies = info.dependencies;
         mod.dependants = info.dependants;
