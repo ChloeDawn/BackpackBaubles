@@ -24,9 +24,6 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.GeneratorAdapter;
 import org.objectweb.asm.commons.Method;
 
-import static dev.sapphic.backpackbaubles.asm.BackpackClassTransformer.BACKPACK_BAUBLES;
-import static dev.sapphic.backpackbaubles.asm.BackpackClassTransformer.IS_BAUBLE_SLOT_EMPTY;
-
 final class BackpackItemVisitor extends ClassVisitor {
     private static final Type SUPER_CLASS = Type.getType("vazkii/arl/item/ItemModArmor");
 
