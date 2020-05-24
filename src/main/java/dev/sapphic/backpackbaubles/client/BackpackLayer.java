@@ -56,12 +56,10 @@ public final class BackpackLayer implements LayerRenderer<AbstractClientPlayer> 
     }
 
     private void renderBackpack(final ItemStack stack, final AbstractClientPlayer player, final float limbSwing, final float limbSwingAmount, final float delta, final float age, final float yaw, final float pitch, final float scale) {
-        final ItemArmor backpack = (ItemArmor) stack.getItem();
-
         this.model.setModelAttributes(this.renderer.getMainModel());
         this.model.setLivingAnimations(player, limbSwing, limbSwingAmount, delta);
 
-        final int color = backpack.getColor(stack);
+        final int color = ((ItemArmor) stack.getItem()).getColor(stack);
         final float red = (color >> 16 & 255) / 255.0F;
         final float green = (color >> 8 & 255) / 255.0F;
         final float blue = (color & 255) / 255.0F;
