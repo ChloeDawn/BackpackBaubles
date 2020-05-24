@@ -73,9 +73,5 @@ public final class BackpackLayer implements LayerRenderer<AbstractClientPlayer> 
         this.renderer.bindTexture(WORN_OVERLAY_TEXTURE);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.model.render(player, limbSwing, limbSwingAmount, age, yaw, pitch, scale);
-
-        if (stack.hasEffect()) {
-            LayerArmorBase.renderEnchantedGlint(this.renderer, player, this.model, limbSwing, limbSwingAmount, delta, age, yaw, pitch, scale);
-        }
     }
 }
