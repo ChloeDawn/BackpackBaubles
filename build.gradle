@@ -7,17 +7,15 @@ plugins {
 group = 'dev.sapphic'
 version = '0.1.0'
 sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 minecraft {
     version = '1.12.2-14.23.5.2847'
     mappings = 'stable_39'
     runDir = 'run'
-    coreMod = 'dev.sapphic.backpackbaubles.asm.BackpackBaublesPlugin'
-    clientJvmArgs = ['-Dfml.coreMods.load=' + coreMod]
-    serverJvmArgs = ['-Dfml.coreMods.load=' + coreMod]
-    replaceIn 'dev/sapphic/backpackbaubles/BackpackBaubles.java'
-    replace '$version', project.version
+    coreMod = 'dev.sapphic.backpackbaubles.BackpackBaublesPlugin'
+    replaceIn 'src/main/java/dev/sapphic/backpackbaubles/BackpackBaubles.java'
+    replaceIn 'src/main/java/dev/sapphic/backpackbaubles/BackpackBaublesPlugin.java'
+    replace '$version': project.version, '$fingerprint': 'FINGERPRINT' // FIXME
 }
 
 repositories {
@@ -36,9 +34,19 @@ dependencies {
 
 compileJava {
     sourceCompatibility = 1.8
-    targetCompatibility = 1.8
     options.fork = true
     options.verbose = true
     options.encoding = 'UTF-8'
     options.compilerArgs << '-Xlint:all'
+}
+
+task signJar(type: SignJar, dependsOn: reobfJar) {
+    onlyIf { project.hasProperty 'keyStore' }
+
+    alias = properties['forgegradle.keystore.alias']
+    storePass = properties['forgegradle.keystore.pass']
+    keyPass = properties['forgegradle.keystore.keypass']
+    keyStore = properties['forgegradle.keystore']
+    inputFile = jar.archivePath
+    outputFile = jar.archivePath
 }

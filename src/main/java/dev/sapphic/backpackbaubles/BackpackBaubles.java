@@ -57,6 +57,9 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import vazkii.quark.oddities.item.ItemBackpack;
 
+import java.io.File;
+import java.security.CodeSource;
+import java.security.cert.Certificate;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -199,9 +202,21 @@ public final class BackpackBaubles extends DummyModContainer {
     }
 
     @Override
+    public File getSource() {
+        return BackpackBaublesPlugin.getSource();
+    }
+
+    @Override
     public boolean registerBus(final EventBus bus, final LoadController controller) {
         bus.register(this);
         return true;
+    }
+
+    @Override
+    public @Nullable Certificate getSigningCertificate() {
+        final @Nullable CodeSource source = BackpackBaubles.class.getProtectionDomain().getCodeSource();
+        final Certificate @Nullable [] certificates = source != null ? source.getCertificates() : null;
+        return certificates != null && certificates.length > 0 ? certificates[0] : null;
     }
 
     @Override

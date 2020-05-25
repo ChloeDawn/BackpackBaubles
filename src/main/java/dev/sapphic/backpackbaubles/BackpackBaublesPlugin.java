@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
-package dev.sapphic.backpackbaubles.asm;
+package dev.sapphic.backpackbaubles;
 
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.DependsOn;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.SortingIndex;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.io.File;
+import java.security.CodeSource;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateEncodingException;
 import java.util.Map;
 
 @SortingIndex(1000)
@@ -34,6 +43,40 @@ import java.util.Map;
     "dev.sapphic.backpackbaubles.client"
 })
 public final class BackpackBaublesPlugin implements IFMLLoadingPlugin {
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    private static @MonotonicNonNull File source;
+
+    static {
+        final HashCode expectedHash = HashCode.fromString("$fingerprint");
+        boolean foundCertificate = false;
+        final @Nullable CodeSource source = BackpackBaubles.class.getProtectionDomain().getCodeSource();
+        if (source != null && "jar".equals(source.getLocation().getProtocol())) {
+            final Certificate @Nullable [] certificates = source.getCertificates();
+            if (certificates != null) {
+                for (final Certificate certificate : certificates) {
+                    final HashCode hash;
+                    try {
+                        hash = Hashing.sha1().hashBytes(certificate.getEncoded());
+                    } catch (final CertificateEncodingException e) {
+                        throw new IllegalArgumentException(String.valueOf(certificate), e);
+                    }
+                    if (expectedHash.equals(hash)) {
+                        foundCertificate = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (!foundCertificate) {
+            LOGGER.error("Missing jar certificate, something has gone very wrong");
+        }
+    }
+
+    public static File getSource() {
+        return source;
+    }
+
     @Override
     public String[] getASMTransformerClass() {
         return new String[] { "dev.sapphic.backpackbaubles.asm.BackpackClassTransformer" };
@@ -51,6 +94,7 @@ public final class BackpackBaublesPlugin implements IFMLLoadingPlugin {
 
     @Override
     public void injectData(final Map<String, Object> data) {
+        source = (File) data.get("coremodLocation");
     }
 
     @Override
