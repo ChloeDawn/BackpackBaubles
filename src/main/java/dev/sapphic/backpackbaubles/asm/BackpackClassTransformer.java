@@ -21,21 +21,10 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.commons.Method;
 
 import java.util.function.Function;
 
 public final class BackpackClassTransformer implements IClassTransformer {
-    static final Type BACKPACK_BAUBLES = Type.getType("dev/sapphic/backpackbaubles/BackpackBaubles");
-
-    static final Method GET_BACKPACK_STACK =
-        Method.getMethod("net.minecraft.item.ItemStack getBackpackStack " +
-            "(net.minecraft.item.ItemStack,net.minecraft.entity.EntityLivingBase)");
-
-    static final Method IS_BAUBLE_SLOT_EMPTY =
-        Method.getMethod("boolean isBaubleSlotEmpty (net.minecraft.entity.Entity)");
-
     static boolean isItemStackGetItem(final int opcode, final String owner, final String name, final String desc) {
         return opcode == Opcodes.INVOKEVIRTUAL
             && "net/minecraft/item/ItemStack".equals(owner)
@@ -51,13 +40,15 @@ public final class BackpackClassTransformer implements IClassTransformer {
 
     @Override
     public byte[] transform(final String name, final String mappedName, final byte[] bytes) {
-        switch (name) {
+        switch (mappedName) {
             case "vazkii.quark.oddities.feature.Backpacks":
                 return transform(bytes, BackpackFeatureVisitor::new);
             case "vazkii.quark.oddities.inventory.ContainerBackpack":
                 return transform(bytes, BackpackContainerVisitor::new);
             case "vazkii.quark.oddities.item.ItemBackpack":
                 return transform(bytes, BackpackItemVisitor::new);
+            case "net.minecraft.client.renderer.entity.RenderManager":
+                return transform(bytes, EntityRendererVisitor::new);
             default:
                 return bytes;
         }

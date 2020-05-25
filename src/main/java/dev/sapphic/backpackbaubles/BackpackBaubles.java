@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import dev.sapphic.backpackbaubles.client.BackpackLayer;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,27 +40,26 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.LoadController;
 import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.versioning.ArtifactVersion;
 import net.minecraftforge.fml.common.versioning.DependencyParser;
 import net.minecraftforge.fml.common.versioning.DependencyParser.DependencyInfo;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import vazkii.quark.oddities.item.ItemBackpack;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.function.Supplier;
 
 public final class BackpackBaubles extends DummyModContainer {
     public static final String ID = "backpackbaubles";
@@ -125,6 +125,13 @@ public final class BackpackBaubles extends DummyModContainer {
         return true;
     }
 
+    @SideOnly(Side.CLIENT)
+    public static void setupRenderLayers(final Map<String, RenderPlayer> renderers) {
+        for (final RenderPlayer renderer : renderers.values()) {
+            renderer.addLayer(new BackpackLayer(renderer));
+        }
+    }
+
     private static ModMetadata createModMetadata() {
         final ModMetadata metdata = new ModMetadata();
         metdata.modId = ID;
@@ -144,16 +151,6 @@ public final class BackpackBaubles extends DummyModContainer {
     @Subscribe
     public void construct(final FMLConstructionEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
-    }
-
-    @Subscribe
-    public void setupRenderLayers(final FMLPostInitializationEvent event) {
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-            //noinspection TrivialFunctionalExpressionUsage
-            ((Supplier<Runnable>) () -> () -> FMLClientHandler.instance().getClient()
-                .getRenderManager().getSkinMap().values().forEach(renderer ->
-                    renderer.addLayer(new BackpackLayer(renderer)))).get().run();
-        }
     }
 
     @SubscribeEvent
