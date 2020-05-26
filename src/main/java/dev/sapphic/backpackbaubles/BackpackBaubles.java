@@ -203,7 +203,7 @@ public final class BackpackBaubles extends DummyModContainer {
 
     @Override
     public File getSource() {
-        return BackpackBaublesPlugin.getSource();
+        return LoadingPlugin.getSource();
     }
 
     @Override

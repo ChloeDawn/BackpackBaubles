@@ -36,6 +36,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.util.Map;
 
+@Name("BackpackBaublesLoadingPlugin")
 @SortingIndex(1000)
 @DependsOn({ "quark", "baubles" })
 @MCVersion("1.12.2")
@@ -44,7 +45,7 @@ import java.util.Map;
     "dev.sapphic.backpackbaubles.asm",
     "dev.sapphic.backpackbaubles.client"
 })
-public final class BackpackBaublesPlugin implements IFMLLoadingPlugin {
+public final class LoadingPlugin implements IFMLLoadingPlugin {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static @MonotonicNonNull File source;
@@ -81,7 +82,7 @@ public final class BackpackBaublesPlugin implements IFMLLoadingPlugin {
 
     @Override
     public String[] getASMTransformerClass() {
-        return new String[] { "dev.sapphic.backpackbaubles.asm.BackpackClassTransformer" };
+        return new String[] { "dev.sapphic.backpackbaubles.asm.ClassTransformer" };
     }
 
     @Override

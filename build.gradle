@@ -16,11 +16,11 @@ minecraft {
     version = '1.12.2-14.23.5.2847'
     mappings = 'stable_39'
     runDir = 'run'
-    coreMod = 'dev.sapphic.backpackbaubles.BackpackBaublesPlugin'
+    coreMod = 'dev.sapphic.backpackbaubles.LoadingPlugin'
     replaceIn 'BackpackBaubles.java'
     replace '$version': project.version
     if (project.hasProperty('signing.mods.keys')) {
-        replaceIn 'BackpackBaublesPlugin.java'
+        replaceIn 'LoadingPlugin.java'
         replace '$fingerprint': fingerprint
     }
 }

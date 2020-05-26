@@ -38,7 +38,7 @@ final class BackpackFeatureVisitor extends ClassVisitor {
                     return new GeneratorAdapter(Opcodes.ASM5, mv, access, name, desc) {
                         @Override
                         public void visitMethodInsn(final int opcode, final String owner, final String name, final String desc, final boolean itf) {
-                            if (BackpackClassTransformer.isItemStackGetItem(opcode, owner, name, desc)) {
+                            if (ClassTransformer.isItemStackGetItem(opcode, owner, name, desc)) {
                                 this.loadLocal(1, Type.getObjectType("net/minecraft/entity/EntityLiving"));
                                 this.invokeStatic(Type.getObjectType("dev/sapphic/backpackbaubles/BackpackBaubles"),
                                     Method.getMethod("net.minecraft.item.ItemStack getBackpackStack " +

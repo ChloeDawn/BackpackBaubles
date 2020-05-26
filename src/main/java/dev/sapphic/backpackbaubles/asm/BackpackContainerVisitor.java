@@ -40,7 +40,7 @@ final class BackpackContainerVisitor extends ClassVisitor {
         return isConstructor(access, name, desc) ? new GeneratorAdapter(Opcodes.ASM5, mv, access, name, desc) {
             @Override
             public void visitMethodInsn(final int opcode, final String owner, final String name, final String desc, final boolean itf) {
-                if (BackpackClassTransformer.isItemStackGetItem(opcode, owner, name, desc)) {
+                if (ClassTransformer.isItemStackGetItem(opcode, owner, name, desc)) {
                     this.loadArg(0); // EntityPlayer
                     this.invokeStatic(Type.getObjectType("dev/sapphic/backpackbaubles/BackpackBaubles"),
                         Method.getMethod("net.minecraft.item.ItemStack getBackpackStack " +

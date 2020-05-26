@@ -24,7 +24,7 @@ import org.objectweb.asm.Opcodes;
 
 import java.util.function.Function;
 
-public final class BackpackClassTransformer implements IClassTransformer {
+public final class ClassTransformer implements IClassTransformer {
     static boolean isItemStackGetItem(final int opcode, final String owner, final String name, final String desc) {
         return opcode == Opcodes.INVOKEVIRTUAL
             && "net/minecraft/item/ItemStack".equals(owner)
