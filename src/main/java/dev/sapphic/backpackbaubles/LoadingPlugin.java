@@ -76,7 +76,7 @@ public final class LoadingPlugin implements IFMLLoadingPlugin {
         }
     }
 
-    public static File getSource() {
+    static File getSource() {
         return source;
     }
 
