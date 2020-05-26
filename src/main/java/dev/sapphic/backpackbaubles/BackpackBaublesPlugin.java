@@ -16,8 +16,10 @@
 
 package dev.sapphic.backpackbaubles;
 
+import com.google.common.base.VerifyException;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.DependsOn;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
@@ -68,8 +70,8 @@ public final class BackpackBaublesPlugin implements IFMLLoadingPlugin {
                 }
             }
         }
-        if (!foundCertificate) {
-            LOGGER.error("Missing jar certificate, something has gone very wrong");
+        if (!foundCertificate && !(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
+            throw new VerifyException(String.valueOf(source));
         }
     }
 

@@ -17,3 +17,6 @@ out/
 .gradle/
 build/
 run/
+
+# signing
+signing.gradle

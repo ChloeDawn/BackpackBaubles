@@ -4,6 +4,10 @@ plugins {
     id 'com.wynprice.cursemaven' version '2.1.4'
 }
 
+if (hasProperty('signing.mods.keys')) {
+    apply from: 'signing.gradle'
+}
+
 group = 'dev.sapphic'
 version = '0.1.0'
 sourceCompatibility = 1.8
@@ -15,7 +19,10 @@ minecraft {
     coreMod = 'dev.sapphic.backpackbaubles.BackpackBaublesPlugin'
     replaceIn 'src/main/java/dev/sapphic/backpackbaubles/BackpackBaubles.java'
     replaceIn 'src/main/java/dev/sapphic/backpackbaubles/BackpackBaublesPlugin.java'
-    replace '$version': project.version, '$fingerprint': 'FINGERPRINT' // FIXME
+    replace '$version': project.version
+    if (project.hasProperty('signing.mods.keys')) {
+        replace '$fingerprint': fingerprint
+    }
 }
 
 repositories {
@@ -38,15 +45,4 @@ compileJava {
     options.verbose = true
     options.encoding = 'UTF-8'
     options.compilerArgs << '-Xlint:all'
-}
-
-task signJar(type: SignJar, dependsOn: reobfJar) {
-    onlyIf { project.hasProperty 'keyStore' }
-
-    alias = properties['forgegradle.keystore.alias']
-    storePass = properties['forgegradle.keystore.pass']
-    keyPass = properties['forgegradle.keystore.keypass']
-    keyStore = properties['forgegradle.keystore']
-    inputFile = jar.archivePath
-    outputFile = jar.archivePath
 }
