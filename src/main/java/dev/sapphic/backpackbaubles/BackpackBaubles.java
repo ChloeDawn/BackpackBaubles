@@ -89,10 +89,10 @@ public final class BackpackBaubles extends DummyModContainer {
             final IItemHandler handler = getItemHandler(stack);
             for (int slot = 0; slot < handler.getSlots(); slot++) {
                 if (!handler.getStackInSlot(slot).isEmpty()) {
-                    return true;
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
     };
 
