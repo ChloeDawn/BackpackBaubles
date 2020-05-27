@@ -68,6 +68,7 @@ import java.util.Set;
 public final class BackpackBaubles extends DummyModContainer {
     public static final String ID = "backpackbaubles";
 
+    private static final ResourceLocation CAPABILITY_ID = new ResourceLocation(ID, "capability");
     private static final int BAUBLE_BODY_SLOT = 5;
 
     private static final IBauble BACKPACK_BAUBLE = new IBauble() {
@@ -180,7 +181,7 @@ public final class BackpackBaubles extends DummyModContainer {
     public void attachCapabilities(final AttachCapabilitiesEvent<ItemStack> event) {
         if (event.getObject().getItem() instanceof ItemBackpack) {
             Preconditions.checkState(CapabilityHolder.bauble != null, "Missing bauble capability");
-            event.addCapability(new ResourceLocation(ID, "capability"), CAPABILITY_PROVIDER);
+            event.addCapability(CAPABILITY_ID, CAPABILITY_PROVIDER);
         }
     }
 
