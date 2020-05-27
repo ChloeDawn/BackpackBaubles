@@ -88,7 +88,7 @@ public final class BackpackBaubles extends DummyModContainer {
             // Only allow unequip if the backpack is empty - follows semantics of a chestplate
             // backpack where Quark enchants it silently with Curse of Binding when non-empty
             final IItemHandler handler = getItemHandler(stack);
-            for (int slot = 0; slot < handler.getSlots(); slot++) {
+            for (int slot = 0; slot < handler.getSlots(); ++slot) {
                 if (!handler.getStackInSlot(slot).isEmpty()) {
                     return false;
                 }
