@@ -16,7 +16,6 @@
 
 package dev.sapphic.backpackbaubles.client;
 
-import baubles.api.BaublesApi;
 import dev.sapphic.backpackbaubles.BackpackBaubles;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -26,7 +25,6 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import vazkii.quark.oddities.client.model.ModelBackpack;
-import vazkii.quark.oddities.item.ItemBackpack;
 
 public final class BackpackLayer implements LayerRenderer<AbstractClientPlayer> {
     private static final ResourceLocation WORN_TEXTURE = new ResourceLocation("quark", "textures/misc/backpack_worn.png");
@@ -43,8 +41,8 @@ public final class BackpackLayer implements LayerRenderer<AbstractClientPlayer> 
 
     @Override
     public void doRenderLayer(final AbstractClientPlayer player, final float limbSwing, final float limbSwingAmount, final float delta, final float age, final float yaw, final float pitch, final float scale) {
-        final ItemStack stack = BaublesApi.getBaublesHandler(player).getStackInSlot(BackpackBaubles.BAUBLE_BODY_SLOT);
-        if (stack.getItem() instanceof ItemBackpack) {
+        final ItemStack stack = BackpackBaubles.getBaubleBackpack(player);
+        if (!stack.isEmpty()) {
             this.renderBackpack(stack, player, limbSwing, limbSwingAmount, delta, age, yaw, pitch, scale);
         }
     }

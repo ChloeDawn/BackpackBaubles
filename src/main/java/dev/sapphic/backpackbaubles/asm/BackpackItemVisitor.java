@@ -42,14 +42,14 @@ final class BackpackItemVisitor extends ClassVisitor {
         final Label ifeq = mg.newLabel();
         final Label exit = mg.newLabel();
 
-        mg.loadArg(2); // Entity
+        mg.loadArg(2); // entity
         mg.invokeStatic(Type.getObjectType("dev/sapphic/backpackbaubles/BackpackBaubles"),
-            Method.getMethod("boolean isBaubleSlotEmpty (net.minecraft.entity.Entity)")
+            Method.getMethod("boolean hasNoBaubleBackpack (net.minecraft.entity.Entity)")
         );
         mg.ifZCmp(Opcodes.IFEQ, ifeq);
         mg.loadThis();
-        mg.loadArgs(); // ItemStack, EntityEquipmentSlot, Entity
-        // essentially invokeSpecial, GeneratorAdaptor lacks in this department
+        mg.loadArgs(); // stack, slot, entity
+        // invokeSpecial
         mg.invokeConstructor(Type.getObjectType("vazkii/arl/item/ItemModArmor"),
             Method.getMethod("boolean isValidArmor (" +
                 "net.minecraft.item.ItemStack, " +
