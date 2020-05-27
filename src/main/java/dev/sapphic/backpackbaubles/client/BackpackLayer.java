@@ -16,17 +16,16 @@
 
 package dev.sapphic.backpackbaubles.client;
 
-import baubles.api.BaublesApi;
-import dev.sapphic.backpackbaubles.BackpackBaubles;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import vazkii.quark.oddities.client.model.ModelBackpack;
-import vazkii.quark.oddities.item.ItemBackpack;
+import baubles.api.*;
+import dev.sapphic.backpackbaubles.*;
+import net.minecraft.client.entity.*;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.entity.layers.*;
+import net.minecraft.item.*;
+import net.minecraft.util.*;
+import vazkii.quark.oddities.client.model.*;
+import vazkii.quark.oddities.item.*;
 
 public final class BackpackLayer implements LayerRenderer<AbstractClientPlayer> {
     private static final ResourceLocation WORN_TEXTURE = new ResourceLocation("quark", "textures/misc/backpack_worn.png");

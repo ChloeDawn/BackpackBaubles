@@ -16,13 +16,8 @@
 
 package dev.sapphic.backpackbaubles.asm;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.commons.GeneratorAdapter;
-import org.objectweb.asm.commons.Method;
+import org.objectweb.asm.*;
+import org.objectweb.asm.commons.*;
 
 final class BackpackFeatureVisitor extends ClassVisitor {
     BackpackFeatureVisitor(final ClassWriter writer) {

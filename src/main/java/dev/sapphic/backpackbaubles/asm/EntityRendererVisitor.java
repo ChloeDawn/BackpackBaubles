@@ -16,13 +16,9 @@
 
 package dev.sapphic.backpackbaubles.asm;
 
-import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.commons.GeneratorAdapter;
-import org.objectweb.asm.commons.Method;
+import net.minecraftforge.fml.common.asm.transformers.deobf.*;
+import org.objectweb.asm.*;
+import org.objectweb.asm.commons.*;
 
 final class EntityRendererVisitor extends ClassVisitor {
     EntityRendererVisitor(final ClassVisitor cv) {

@@ -16,13 +16,10 @@
 
 package dev.sapphic.backpackbaubles.asm;
 
-import net.minecraft.launchwrapper.IClassTransformer;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
+import net.minecraft.launchwrapper.*;
+import org.objectweb.asm.*;
 
-import java.util.function.Function;
+import java.util.function.*;
 
 public final class ClassTransformer implements IClassTransformer {
     static boolean isItemStackGetItem(final int opcode, final String owner, final String name, final String desc) {

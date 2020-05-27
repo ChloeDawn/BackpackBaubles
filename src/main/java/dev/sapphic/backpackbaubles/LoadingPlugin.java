@@ -16,26 +16,19 @@
 
 package dev.sapphic.backpackbaubles;
 
-import com.google.common.base.VerifyException;
-import com.google.common.hash.HashCode;
-import com.google.common.hash.Hashing;
-import net.minecraft.launchwrapper.Launch;
-import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
-import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.DependsOn;
-import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
-import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.Name;
-import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.SortingIndex;
-import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import com.google.common.base.*;
+import com.google.common.hash.*;
+import net.minecraft.launchwrapper.*;
+import net.minecraftforge.fml.relauncher.*;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.*;
+import org.apache.logging.log4j.*;
+import org.checkerframework.checker.nullness.qual.*;
 
-import java.io.File;
-import java.security.CodeSource;
+import java.io.*;
+import java.security.*;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateEncodingException;
-import java.util.Map;
+import java.security.cert.*;
+import java.util.*;
 
 @Name("BackpackBaublesLoadingPlugin")
 @SortingIndex(1000)
