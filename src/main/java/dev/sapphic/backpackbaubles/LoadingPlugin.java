@@ -19,7 +19,6 @@ package dev.sapphic.backpackbaubles;
 import com.google.common.base.VerifyException;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.DependsOn;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
@@ -51,7 +50,7 @@ public final class LoadingPlugin implements IFMLLoadingPlugin {
 
     private static @MonotonicNonNull File source;
 
-    static {
+    private static void verifyFingerprint(final boolean inDev) {
         final HashCode expectedHash = HashCode.fromString("$fingerprint");
         boolean foundCertificate = false;
         final @Nullable CodeSource source = BackpackBaubles.class.getProtectionDomain().getCodeSource();
@@ -63,7 +62,7 @@ public final class LoadingPlugin implements IFMLLoadingPlugin {
                     try {
                         hash = Hashing.sha1().hashBytes(certificate.getEncoded());
                     } catch (final CertificateEncodingException e) {
-                        throw new IllegalArgumentException(String.valueOf(certificate), e);
+                        throw new IllegalStateException(String.valueOf(certificate), e);
                     }
                     if (expectedHash.equals(hash)) {
                         foundCertificate = true;
@@ -72,7 +71,7 @@ public final class LoadingPlugin implements IFMLLoadingPlugin {
                 }
             }
         }
-        if (!foundCertificate && !(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
+        if (!foundCertificate && !inDev) {
             throw new VerifyException(String.valueOf(source));
         }
     }
@@ -98,6 +97,7 @@ public final class LoadingPlugin implements IFMLLoadingPlugin {
 
     @Override
     public void injectData(final Map<String, Object> data) {
+        verifyFingerprint(!(boolean) data.get("runtimeDeobfuscationEnabled"));
         source = (File) data.get("coremodLocation");
     }
 
