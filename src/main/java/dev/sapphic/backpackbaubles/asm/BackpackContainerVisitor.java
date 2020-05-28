@@ -29,28 +29,26 @@ final class BackpackContainerVisitor extends ClassVisitor {
         super(Opcodes.ASM5, writer);
     }
 
-    private static boolean isConstructor(final int access, final String name, final String desc) {
-        return access == Opcodes.ACC_PUBLIC && "<init>".equals(name)
-            && "(Lnet/minecraft/entity/player/EntityPlayer;)V".equals(desc);
-    }
-
     @Override
     public MethodVisitor visitMethod(final int access, final String name, final String desc, final String signature, final String[] exceptions) {
         final MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
-        return isConstructor(access, name, desc) ? new GeneratorAdapter(Opcodes.ASM5, mv, access, name, desc) {
-            @Override
-            public void visitMethodInsn(final int opcode, final String owner, final String name, final String desc, final boolean itf) {
-                if (ClassTransformer.isItemStackGetItem(opcode, owner, name, desc)) {
-                    this.loadArg(0); // player
-                    this.invokeStatic(Type.getObjectType("dev/sapphic/backpackbaubles/BackpackBaubles"),
-                        Method.getMethod("net.minecraft.item.ItemStack getBackpackStack " +
-                            "(net.minecraft.item.ItemStack, net.minecraft.entity.EntityLivingBase)")
-                    );
-                    this.storeLocal(5, Type.getObjectType("net/minecraft/item/ItemStack"));
-                    this.loadLocal(5, Type.getObjectType("net/minecraft/item/ItemStack"));
+        if (access == Opcodes.ACC_PUBLIC && "<init>".equals(name) && "(Lnet/minecraft/entity/player/EntityPlayer;)V".equals(desc)) {
+            return new GeneratorAdapter(Opcodes.ASM5, mv, access, name, desc) {
+                @Override
+                public void visitMethodInsn(final int opcode, final String owner, final String name, final String desc, final boolean itf) {
+                    if (ClassTransformer.isItemStackGetItem(opcode, owner, name, desc)) {
+                        this.loadArg(0); // player
+                        this.invokeStatic(Type.getObjectType("dev/sapphic/backpackbaubles/BackpackBaubles"),
+                            Method.getMethod("net.minecraft.item.ItemStack getBackpackStack " +
+                                "(net.minecraft.item.ItemStack, net.minecraft.entity.EntityLivingBase)")
+                        );
+                        this.storeLocal(5, Type.getObjectType("net/minecraft/item/ItemStack"));
+                        this.loadLocal(5, Type.getObjectType("net/minecraft/item/ItemStack"));
+                    }
+                    super.visitMethodInsn(opcode, owner, name, desc, itf);
                 }
-                super.visitMethodInsn(opcode, owner, name, desc, itf);
-            }
-        } : mv;
+            };
+        }
+        return mv;
     }
 }
