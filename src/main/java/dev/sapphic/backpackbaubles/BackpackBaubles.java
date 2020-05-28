@@ -149,24 +149,25 @@ public final class BackpackBaubles extends DummyModContainer {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void equipBackpackAsBauble(final PlayerInteractEvent.RightClickItem event) {
         final ItemStack stack = event.getItemStack();
-        if (stack.getItem() instanceof ItemBackpack) {
-            final EntityPlayer player = event.getEntityPlayer();
-            EnumActionResult result = EnumActionResult.FAIL;
-            if (getChestplateBackpack(player).isEmpty()) {
-                final IItemHandler handler = getBaubleHandler(player);
-                final ItemStack remainder = handler.insertItem(BAUBLE_BODY_SLOT, stack.copy(), true);
-                if (remainder.getCount() < stack.getCount()) {
-                    final ItemArmor armor = (ItemArmor) stack.getItem();
-                    final ArmorMaterial material = armor.getArmorMaterial();
-                    player.playSound(material.getSoundEvent(), 1.0F, 1.0F);
-                    handler.insertItem(BAUBLE_BODY_SLOT, stack.copy(), false);
-                    stack.setCount(remainder.getCount());
-                    result = EnumActionResult.SUCCESS;
-                }
-            }
-            event.setCancellationResult(result);
-            event.setCanceled(true);
+        if (!isBackpack(stack)) {
+            return;
         }
+        final EntityPlayer player = event.getEntityPlayer();
+        EnumActionResult result = EnumActionResult.FAIL;
+        if (getChestplateBackpack(player).isEmpty()) {
+            final IItemHandler handler = getBaubleHandler(player);
+            final ItemStack remainder = handler.insertItem(BAUBLE_BODY_SLOT, stack.copy(), true);
+            if (remainder.getCount() < stack.getCount()) {
+                final ItemArmor armor = (ItemArmor) stack.getItem();
+                final ArmorMaterial material = armor.getArmorMaterial();
+                player.playSound(material.getSoundEvent(), 1.0F, 1.0F);
+                handler.insertItem(BAUBLE_BODY_SLOT, stack.copy(), false);
+                stack.setCount(remainder.getCount());
+                result = EnumActionResult.SUCCESS;
+            }
+        }
+        event.setCancellationResult(result);
+        event.setCanceled(true);
     }
 
     @Override
