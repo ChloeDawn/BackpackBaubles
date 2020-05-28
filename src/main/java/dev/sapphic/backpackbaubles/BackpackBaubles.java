@@ -18,8 +18,8 @@ package dev.sapphic.backpackbaubles;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import baubles.api.cap.BaublesCapabilities;
 import baubles.api.cap.IBaublesItemHandler;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -36,7 +36,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -52,9 +51,9 @@ import net.minecraftforge.fml.common.versioning.DependencyParser;
 import net.minecraftforge.fml.common.versioning.DependencyParser.DependencyInfo;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import vazkii.quark.oddities.item.ItemBackpack;
 
@@ -120,18 +119,25 @@ public final class BackpackBaubles extends DummyModContainer {
     }
 
     private static IItemHandler getItemHandler(final ItemStack stack) {
-        final @Nullable IItemHandler handler = stack.getCapability(CapabilityHolder.itemHandler, null);
+        final @Nullable IItemHandler handler = lookup(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, stack);
         return handler != null ? handler : EmptyHandler.INSTANCE;
     }
 
     private static IItemHandler getBaubleHandler(final EntityPlayer player) {
-        final @Nullable IBaublesItemHandler handler = player.getCapability(CapabilityHolder.baubleHandler, null);
+        final @Nullable IBaublesItemHandler handler = lookup(BaublesCapabilities.CAPABILITY_BAUBLES, player);
         if (handler != null) {
             // Azanor whyyyyyyyyyyyyy
             handler.setPlayer(player);
             return handler;
         }
         return EmptyHandler.INSTANCE;
+    }
+
+    private static <T> @Nullable T lookup(final @Nullable Capability<T> cap, final ICapabilityProvider provider) {
+        if (cap == null) {
+            throw new IllegalStateException("Capability not present");
+        }
+        return provider.getCapability(cap, null);
     }
 
     @Subscribe
@@ -141,7 +147,7 @@ public final class BackpackBaubles extends DummyModContainer {
 
     @SubscribeEvent
     public void attachCapabilities(final AttachCapabilitiesEvent<ItemStack> event) {
-        if (event.getObject().getItem() instanceof ItemBackpack && CapabilityHolder.bauble != null) {
+        if (BaublesCapabilities.CAPABILITY_ITEM_BAUBLE != null && event.getObject().getItem() instanceof ItemBackpack) {
             event.addCapability(CAPABILITY_ID, BaubleHolder.CAPABILITY_PROVIDER);
         }
     }
@@ -219,7 +225,7 @@ public final class BackpackBaubles extends DummyModContainer {
             @Override
             public boolean canEquip(final ItemStack stack, final EntityLivingBase entity) {
                 // Only allow equip if the entity has no backpack in their chestplate slot
-                return !getChestplateBackpack(entity).isEmpty();
+                return getChestplateBackpack(entity).isEmpty();
             }
 
             @Override
@@ -239,25 +245,23 @@ public final class BackpackBaubles extends DummyModContainer {
         private static final ICapabilityProvider CAPABILITY_PROVIDER = new ICapabilityProvider() {
             @Override
             public boolean hasCapability(final Capability<?> capability, final @Nullable EnumFacing side) {
-                return CapabilityHolder.bauble == capability;
+                return baubleCapability() == capability;
             }
 
             @Override
             @SuppressWarnings("unchecked")
             public <T> @Nullable T getCapability(final Capability<T> capability, final @Nullable EnumFacing side) {
-                return CapabilityHolder.bauble == capability ? (T) BACKPACK_BAUBLE : null;
+                return baubleCapability() == capability ? (T) BACKPACK_BAUBLE : null;
             }
+
         };
-    }
 
-    private static final class CapabilityHolder {
-        @CapabilityInject(IItemHandler.class)
-        private static @MonotonicNonNull Capability<IItemHandler> itemHandler;
-
-        @CapabilityInject(IBaublesItemHandler.class)
-        private static @MonotonicNonNull Capability<IBaublesItemHandler> baubleHandler;
-
-        @CapabilityInject(IBauble.class)
-        private static @MonotonicNonNull Capability<IBauble> bauble;
+        private static Capability<IBauble> baubleCapability() {
+            final @Nullable Capability<IBauble> cap = BaublesCapabilities.CAPABILITY_ITEM_BAUBLE;
+            if (cap == null) {
+                throw new IllegalStateException("Bauble capability not present");
+            }
+            return cap;
+        }
     }
 }
