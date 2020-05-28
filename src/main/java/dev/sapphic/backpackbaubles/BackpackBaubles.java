@@ -57,6 +57,7 @@ import java.io.File;
 import java.security.CodeSource;
 import java.security.cert.Certificate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public final class BackpackBaubles extends DummyModContainer {
@@ -233,23 +234,14 @@ public final class BackpackBaubles extends DummyModContainer {
         private static final ICapabilityProvider CAPABILITY_PROVIDER = new ICapabilityProvider() {
             @Override
             public boolean hasCapability(final Capability<?> capability, final @Nullable EnumFacing side) {
-                return baubleCapability() == capability;
+                return Objects.requireNonNull(BaublesCapabilities.CAPABILITY_ITEM_BAUBLE) == capability;
             }
 
             @Override
             @SuppressWarnings("unchecked")
             public <T> @Nullable T getCapability(final Capability<T> capability, final @Nullable EnumFacing side) {
-                return baubleCapability() == capability ? (T) BACKPACK_BAUBLE : null;
+                return this.hasCapability(capability, side) ? (T) BACKPACK_BAUBLE : null;
             }
-
         };
-
-        private static Capability<IBauble> baubleCapability() {
-            final @Nullable Capability<IBauble> cap = BaublesCapabilities.CAPABILITY_ITEM_BAUBLE;
-            if (cap == null) {
-                throw new IllegalStateException("Bauble capability not present");
-            }
-            return cap;
-        }
     }
 }
