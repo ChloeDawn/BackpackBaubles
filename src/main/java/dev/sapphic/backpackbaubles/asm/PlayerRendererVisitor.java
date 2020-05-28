@@ -56,7 +56,7 @@ final class PlayerRendererVisitor extends ClassVisitor {
                 public void invokeVirtual(final Type owner, final Method method) {
                     final FMLDeobfuscatingRemapper rm = FMLDeobfuscatingRemapper.INSTANCE;
                     final String name = rm.mapMethodName(rm.unmap(owner.getInternalName()), method.getName(), method.getDescriptor());
-                    super.invokeVirtual(owner, new Method(name, method.getReturnType(), method.getArgumentTypes()));
+                    super.invokeVirtual(owner, new Method(name, method.getDescriptor()));
                 }
             };
         }
