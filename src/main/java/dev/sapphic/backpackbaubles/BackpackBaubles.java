@@ -23,8 +23,6 @@ import baubles.api.cap.IBaublesItemHandler;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import dev.sapphic.backpackbaubles.client.BackpackLayer;
-import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,8 +47,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.versioning.ArtifactVersion;
 import net.minecraftforge.fml.common.versioning.DependencyParser;
 import net.minecraftforge.fml.common.versioning.DependencyParser.DependencyInfo;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
@@ -61,7 +57,6 @@ import java.io.File;
 import java.security.CodeSource;
 import java.security.cert.Certificate;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public final class BackpackBaubles extends DummyModContainer {
@@ -89,13 +84,6 @@ public final class BackpackBaubles extends DummyModContainer {
 
     public static boolean hasNoBaubleBackpack(final Entity entity) {
         return !(entity instanceof EntityPlayer && !getBaubleBackpack((EntityPlayer) entity).isEmpty());
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static void setupRenderLayers(final Map<String, RenderPlayer> renderers) {
-        for (final RenderPlayer renderer : renderers.values()) {
-            renderer.addLayer(new BackpackLayer(renderer));
-        }
     }
 
     public static ItemStack getBackpackStack(final ItemStack chestplate, final EntityLivingBase entity) {

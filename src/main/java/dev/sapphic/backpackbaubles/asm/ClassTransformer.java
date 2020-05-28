@@ -47,8 +47,8 @@ public final class ClassTransformer implements IClassTransformer {
                 return transform(bytes, BackpackContainerVisitor::new);
             case "vazkii.quark.oddities.item.ItemBackpack":
                 return transform(bytes, BackpackItemVisitor::new);
-            case "net.minecraft.client.renderer.entity.RenderManager":
-                return transform(bytes, EntityRendererVisitor::new);
+            case "net.minecraft.client.renderer.entity.RenderPlayer":
+                return transform(bytes, PlayerRendererVisitor::new);
             default:
                 return bytes;
         }
