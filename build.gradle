@@ -19,7 +19,7 @@ minecraft {
     coreMod = 'dev.sapphic.backpackbaubles.LoadingPlugin'
     replaceIn 'BackpackBaubles.java'
     replace '$version': project.version
-    if (hasProperty('signing.mods.keystore')) {
+    if (project.hasProperty('signing.mods.keystore')) {
         replaceIn 'LoadingPlugin.java'
         replace '$fingerprint': fingerprint
     }
