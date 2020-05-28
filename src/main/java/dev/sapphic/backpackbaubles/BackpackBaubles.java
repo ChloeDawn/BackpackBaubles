@@ -72,45 +72,6 @@ public final class BackpackBaubles extends DummyModContainer {
     private static final ResourceLocation CAPABILITY_ID = new ResourceLocation(ID, "capability");
     private static final int BAUBLE_BODY_SLOT = 5;
 
-    private static final IBauble BACKPACK_BAUBLE = new IBauble() {
-        @Override
-        public BaubleType getBaubleType(final ItemStack stack) {
-            return BaubleType.BODY;
-        }
-
-        @Override
-        public boolean canEquip(final ItemStack stack, final EntityLivingBase entity) {
-            // Only allow equip if the entity has no backpack in their chestplate slot
-            return !getChestplateBackpack(entity).isEmpty();
-        }
-
-        @Override
-        public boolean canUnequip(final ItemStack stack, final EntityLivingBase entity) {
-            // Only allow unequip if the backpack is empty - follows semantics of a chestplate
-            // backpack where Quark enchants it silently with Curse of Binding when non-empty
-            final IItemHandler handler = getItemHandler(stack);
-            for (int slot = 0; slot < handler.getSlots(); ++slot) {
-                if (!handler.getStackInSlot(slot).isEmpty()) {
-                    return false;
-                }
-            }
-            return true;
-        }
-    };
-
-    private static final ICapabilityProvider CAPABILITY_PROVIDER = new ICapabilityProvider() {
-        @Override
-        public boolean hasCapability(final Capability<?> capability, final @Nullable EnumFacing side) {
-            return CapabilityHolder.bauble == capability;
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public <T> @Nullable T getCapability(final Capability<T> capability, final @Nullable EnumFacing side) {
-            return CapabilityHolder.bauble == capability ? (T) BACKPACK_BAUBLE : null;
-        }
-    };
-
     public BackpackBaubles() {
         super(new ModMetadata());
         final ModMetadata metadata = this.getMetadata();
@@ -180,9 +141,8 @@ public final class BackpackBaubles extends DummyModContainer {
 
     @SubscribeEvent
     public void attachCapabilities(final AttachCapabilitiesEvent<ItemStack> event) {
-        if (event.getObject().getItem() instanceof ItemBackpack) {
-            Preconditions.checkState(CapabilityHolder.bauble != null, "Missing bauble capability");
-            event.addCapability(CAPABILITY_ID, CAPABILITY_PROVIDER);
+        if (event.getObject().getItem() instanceof ItemBackpack && CapabilityHolder.bauble != null) {
+            event.addCapability(CAPABILITY_ID, BaubleHolder.CAPABILITY_PROVIDER);
         }
     }
 
@@ -247,6 +207,47 @@ public final class BackpackBaubles extends DummyModContainer {
             "dev.sapphic.backpackbaubles.asm",
             "dev.sapphic.backpackbaubles.client"
         );
+    }
+
+    private static final class BaubleHolder {
+        private static final IBauble BACKPACK_BAUBLE = new IBauble() {
+            @Override
+            public BaubleType getBaubleType(final ItemStack stack) {
+                return BaubleType.BODY;
+            }
+
+            @Override
+            public boolean canEquip(final ItemStack stack, final EntityLivingBase entity) {
+                // Only allow equip if the entity has no backpack in their chestplate slot
+                return !getChestplateBackpack(entity).isEmpty();
+            }
+
+            @Override
+            public boolean canUnequip(final ItemStack stack, final EntityLivingBase entity) {
+                // Only allow unequip if the backpack is empty - follows semantics of a chestplate
+                // backpack where Quark enchants it silently with Curse of Binding when non-empty
+                final IItemHandler handler = getItemHandler(stack);
+                for (int slot = 0; slot < handler.getSlots(); ++slot) {
+                    if (!handler.getStackInSlot(slot).isEmpty()) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        };
+
+        private static final ICapabilityProvider CAPABILITY_PROVIDER = new ICapabilityProvider() {
+            @Override
+            public boolean hasCapability(final Capability<?> capability, final @Nullable EnumFacing side) {
+                return CapabilityHolder.bauble == capability;
+            }
+
+            @Override
+            @SuppressWarnings("unchecked")
+            public <T> @Nullable T getCapability(final Capability<T> capability, final @Nullable EnumFacing side) {
+                return CapabilityHolder.bauble == capability ? (T) BACKPACK_BAUBLE : null;
+            }
+        };
     }
 
     private static final class CapabilityHolder {
