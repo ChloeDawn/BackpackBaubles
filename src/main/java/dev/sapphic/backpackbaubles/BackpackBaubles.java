@@ -108,12 +108,12 @@ public final class BackpackBaubles extends DummyModContainer {
     }
 
     private static IItemHandler getItemHandler(final ItemStack stack) {
-        final @Nullable IItemHandler handler = lookup(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, stack);
+        final @Nullable IItemHandler handler = get(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, stack);
         return handler != null ? handler : EmptyHandler.INSTANCE;
     }
 
     private static IItemHandler getBaubleHandler(final EntityPlayer player) {
-        final @Nullable IBaublesItemHandler handler = lookup(BaublesCapabilities.CAPABILITY_BAUBLES, player);
+        final @Nullable IBaublesItemHandler handler = get(BaublesCapabilities.CAPABILITY_BAUBLES, player);
         if (handler != null) {
             // Azanor whyyyyyyyyyyyyy
             handler.setPlayer(player);
@@ -122,7 +122,7 @@ public final class BackpackBaubles extends DummyModContainer {
         return EmptyHandler.INSTANCE;
     }
 
-    private static <T> @Nullable T lookup(final @Nullable Capability<T> cap, final ICapabilityProvider provider) {
+    private static <T> @Nullable T get(final @Nullable Capability<T> cap, final ICapabilityProvider provider) {
         if (cap == null) {
             throw new IllegalStateException("Capability not present");
         }
