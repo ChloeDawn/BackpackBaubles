@@ -36,7 +36,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.util.Map;
 
-@Name("BackpackBaublesLoadingPlugin")
+@Name(BackpackBaubles.NAME)
 @SortingIndex(1000)
 @DependsOn({ "quark", "baubles" })
 @MCVersion("1.12.2")

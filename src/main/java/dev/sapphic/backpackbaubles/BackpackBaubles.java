@@ -67,6 +67,7 @@ import java.util.Set;
 
 public final class BackpackBaubles extends DummyModContainer {
     public static final String ID = "backpackbaubles";
+    public static final String NAME = "Backpack Baubles";
 
     private static final ResourceLocation CAPABILITY_ID = new ResourceLocation(ID, "capability");
     private static final int BAUBLE_BODY_SLOT = 5;
@@ -114,7 +115,7 @@ public final class BackpackBaubles extends DummyModContainer {
         super(new ModMetadata());
         final ModMetadata metadata = this.getMetadata();
         metadata.modId = ID;
-        metadata.name = "Backpack Baubles";
+        metadata.name = NAME;
         metadata.version = "$version";
         metadata.description = "Allows for Quark's backpack to be equipped in Baubles' body slot";
         metadata.url = "https://github.com/ChloeDawn/BackpackBaubles";
