@@ -28,6 +28,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -155,7 +156,9 @@ public final class BackpackBaubles extends DummyModContainer {
                 final IItemHandler handler = getBaubleHandler(player);
                 final ItemStack remainder = handler.insertItem(BAUBLE_BODY_SLOT, stack.copy(), true);
                 if (remainder.getCount() < stack.getCount()) {
-                    player.playSound(((ItemArmor) stack.getItem()).getArmorMaterial().getSoundEvent(), 1.0F, 1.0F);
+                    final ItemArmor armor = (ItemArmor) stack.getItem();
+                    final ArmorMaterial material = armor.getArmorMaterial();
+                    player.playSound(material.getSoundEvent(), 1.0F, 1.0F);
                     handler.insertItem(BAUBLE_BODY_SLOT, stack.copy(), false);
                     stack.setCount(remainder.getCount());
                     result = EnumActionResult.SUCCESS;
