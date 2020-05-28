@@ -8,7 +8,7 @@ group = 'dev.sapphic'
 version = '0.1.0'
 sourceCompatibility = 1.8
 
-if (hasProperty('signing.mods.keys')) {
+if (hasProperty('signing.mods.keystore')) {
     apply from: 'signing.gradle'
 }
 
@@ -19,7 +19,7 @@ minecraft {
     coreMod = 'dev.sapphic.backpackbaubles.LoadingPlugin'
     replaceIn 'BackpackBaubles.java'
     replace '$version': project.version
-    if (project.hasProperty('signing.mods.keys')) {
+    if (project.hasProperty('signing.mods.keystore')) {
         replaceIn 'LoadingPlugin.java'
         replace '$fingerprint': fingerprint
     }
