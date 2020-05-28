@@ -54,7 +54,7 @@ public final class LoadingPlugin implements IFMLLoadingPlugin {
         final HashCode expectedHash = HashCode.fromString("$fingerprint");
         boolean foundCertificate = false;
         final @Nullable CodeSource source = BackpackBaubles.class.getProtectionDomain().getCodeSource();
-        if (source != null && "jar".equals(source.getLocation().getProtocol())) {
+        if (source != null) {
             final Certificate @Nullable [] certificates = source.getCertificates();
             if (certificates != null) {
                 for (final Certificate certificate : certificates) {
