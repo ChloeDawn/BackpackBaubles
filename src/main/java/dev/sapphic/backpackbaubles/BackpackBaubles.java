@@ -88,7 +88,7 @@ public final class BackpackBaubles extends DummyModContainer {
     }
 
     public static ItemStack getBackpackStack(final ItemStack chestplate, final EntityLivingBase entity) {
-        if (!(chestplate.getItem() instanceof ItemBackpack) && entity instanceof EntityPlayer) {
+        if (!isBackpack(chestplate) && entity instanceof EntityPlayer) {
             final ItemStack bauble = getBaubleBackpack((EntityPlayer) entity);
             if (!bauble.isEmpty()) {
                 return bauble;
@@ -99,12 +99,12 @@ public final class BackpackBaubles extends DummyModContainer {
 
     public static ItemStack getBaubleBackpack(final EntityPlayer player) {
         final ItemStack bauble = getBaubleHandler(player).getStackInSlot(BAUBLE_BODY_SLOT);
-        return bauble.getItem() instanceof ItemBackpack ? bauble : ItemStack.EMPTY;
+        return isBackpack(bauble) ? bauble : ItemStack.EMPTY;
     }
 
     private static ItemStack getChestplateBackpack(final EntityLivingBase entity) {
         final ItemStack chestplate = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-        return chestplate.getItem() instanceof ItemBackpack ? chestplate : ItemStack.EMPTY;
+        return isBackpack(chestplate) ? chestplate : ItemStack.EMPTY;
     }
 
     private static IItemHandler getItemHandler(final ItemStack stack) {
@@ -129,6 +129,10 @@ public final class BackpackBaubles extends DummyModContainer {
         return provider.getCapability(cap, null);
     }
 
+    private static boolean isBackpack(final ItemStack stack) {
+        return stack.getItem() instanceof ItemBackpack;
+    }
+
     @Subscribe
     public void subscribeToEventBus(final FMLConstructionEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
@@ -136,7 +140,7 @@ public final class BackpackBaubles extends DummyModContainer {
 
     @SubscribeEvent
     public void attachCapabilities(final AttachCapabilitiesEvent<ItemStack> event) {
-        if (BaublesCapabilities.CAPABILITY_ITEM_BAUBLE != null && event.getObject().getItem() instanceof ItemBackpack) {
+        if (BaublesCapabilities.CAPABILITY_ITEM_BAUBLE != null && isBackpack(event.getObject())) {
             event.addCapability(CAPABILITY_ID, BaubleHolder.CAPABILITY_PROVIDER);
         }
     }
