@@ -85,7 +85,7 @@ public final class BackpackBaubles extends DummyModContainer {
     }
 
     public static boolean hasNoBaubleBackpack(final Entity entity) {
-        return !(entity instanceof EntityPlayer && !getBaubleBackpack((EntityPlayer) entity).isEmpty());
+        return !(entity instanceof EntityPlayer) || getBaubleBackpack((EntityPlayer) entity).isEmpty();
     }
 
     public static ItemStack getBackpackStack(final ItemStack chestplate, final EntityLivingBase entity) {
