@@ -37,7 +37,7 @@ import java.security.cert.CertificateEncodingException;
 import java.util.Map;
 
 @Name(BackpackBaubles.NAME)
-@SortingIndex(1000)
+@SortingIndex(1001)
 @DependsOn({ "quark", "baubles" })
 @MCVersion("1.12.2")
 @TransformerExclusions({
