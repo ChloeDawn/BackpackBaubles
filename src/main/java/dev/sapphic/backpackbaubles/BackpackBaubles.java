@@ -158,7 +158,7 @@ public final class BackpackBaubles extends DummyModContainer {
         if (stack.getItem() instanceof ItemBackpack) {
             final EntityPlayer player = event.getEntityPlayer();
             EnumActionResult result = EnumActionResult.FAIL;
-            if (!getChestplateBackpack(player).isEmpty()) {
+            if (getChestplateBackpack(player).isEmpty()) {
                 final IItemHandler handler = getBaubleHandler(player);
                 final ItemStack remainder = handler.insertItem(BAUBLE_BODY_SLOT, stack.copy(), true);
                 if (remainder.getCount() < stack.getCount()) {
