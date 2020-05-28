@@ -4,13 +4,13 @@ plugins {
     id 'com.wynprice.cursemaven' version '2.1.4'
 }
 
-if (hasProperty('signing.mods.keys')) {
-    apply from: 'signing.gradle'
-}
-
 group = 'dev.sapphic'
 version = '0.1.0'
 sourceCompatibility = 1.8
+
+if (hasProperty('signing.mods.keys')) {
+    apply from: 'signing.gradle'
+}
 
 minecraft {
     version = '1.12.2-14.23.5.2847'
