@@ -124,11 +124,8 @@ public final class BackpackBaubles extends DummyModContainer {
         return EmptyHandler.INSTANCE;
     }
 
-    private static <T> @Nullable T get(final @Nullable Capability<T> cap, final ICapabilityProvider provider) {
-        if (cap == null) {
-            throw new IllegalStateException("Capability not present");
-        }
-        return provider.getCapability(cap, null);
+    private static <T> @Nullable T get(final @Nullable Capability<T> capability, final ICapabilityProvider provider) {
+        return provider.getCapability(Objects.requireNonNull(capability, "capability"), null);
     }
 
     private static boolean isBackpack(final ItemStack stack) {
