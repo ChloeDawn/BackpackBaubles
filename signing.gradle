@@ -1,18 +1,23 @@
+def sha1 = property 'signing.mods.sha1'
+def keyalias = property 'signing.mods.keyalias'
+def keystore = property 'signing.mods.keystore'
+def password = property 'signing.mods.password'
+
 minecraft {
-    replace '$fingerprint': project.property('signing.mods.sha1')
+    replace '$fingerprint': sha1
 }
 
 task signCoreJar(type: SignJar) {
-    alias = project.property 'signing.mods.keyalias'
-    keyStore = project.property 'signing.mods.keystore'
-    keyPass = storePass = project.property 'signing.mods.password'
+    alias = keyalias
+    keyStore = keystore
+    keyPass = storePass = password
     inputFile = outputFile = coreJar.archivePath
 }
 
 task signJar(type: SignJar, dependsOn: [signCoreJar, reobfJar]) {
-    alias = project.property 'signing.mods.keyalias'
-    keyStore = project.property 'signing.mods.keystore'
-    keyPass = storePass = project.property 'signing.mods.password'
+    alias = keyalias
+    keyStore = keystore
+    keyPass = storePass = password
     inputFile = outputFile = jar.archivePath
 }
 
