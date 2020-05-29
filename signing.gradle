@@ -1,4 +1,6 @@
-ext.fingerprint = property 'signing.mods.sha1'
+minecraft {
+    replace '$fingerprint': project.property('signing.mods.sha1')
+}
 
 task signCoreJar(type: SignJar) {
     alias = project.property 'signing.mods.keyalias'

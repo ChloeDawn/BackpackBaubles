@@ -39,9 +39,6 @@ minecraft {
     serverJvmArgs = ["-Dfml.coreMods.load=$loadingPlugin"]
     replaceIn 'BackpackBaubles.java'
     replace '$version': project.version
-    if (project.hasProperty('signing.mods.keystore')) {
-        replace '$fingerprint': fingerprint
-    }
 }
 
 repositories {
