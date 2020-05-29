@@ -21,6 +21,7 @@ import baubles.api.IBauble;
 import baubles.api.cap.BaublesCapabilities;
 import baubles.api.cap.IBaublesItemHandler;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import net.minecraft.entity.Entity;
@@ -79,9 +80,9 @@ public final class BackpackBaubles extends DummyModContainer {
         metadata.authorList = ImmutableList.of("Chloe Dawn");
         final DependencyInfo info = new DependencyParser(ID, FMLCommonHandler.instance().getSide())
             .parseDependencies("required-after:quark@[r1.6-179,);required-after:baubles@[1.5.2,)");
-        metadata.requiredMods = info.requirements;
-        metadata.dependencies = info.dependencies;
-        metadata.dependants = info.dependants;
+        metadata.requiredMods = ImmutableSet.copyOf(info.requirements);
+        metadata.dependencies = ImmutableList.copyOf(info.dependencies);
+        metadata.dependants = ImmutableList.copyOf(info.dependants);
     }
 
     public static boolean hasNoBaubleBackpack(final Entity entity) {
