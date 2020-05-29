@@ -37,8 +37,6 @@ minecraft {
     runDir = 'run'
     clientJvmArgs = ["-Dfml.coreMods.load=$loadingPlugin"]
     serverJvmArgs = ["-Dfml.coreMods.load=$loadingPlugin"]
-    replaceIn 'BackpackBaubles.java'
-    replace '$version': project.version
 }
 
 repositories {
@@ -53,6 +51,16 @@ dependencies {
     deobfCompile 'curse.maven:quark:2924091'
     deobfCompile 'curse.maven:autoreglib:2746011'
     deobfCompile 'curse.maven:quark-oddities:2604798'
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info', 'version.properties'
+        expand 'version': version
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info', 'version.properties'
+    }
 }
 
 compileJava {
