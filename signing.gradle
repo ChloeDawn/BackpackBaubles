@@ -14,5 +14,6 @@ task signJar(type: SignJar, dependsOn: signCoreJar) {
     inputFile = outputFile = jar.archivePath
 }
 
+signJar.dependsOn reobfJar
 jar.dependsOn signCoreJar
 build.dependsOn signJar
