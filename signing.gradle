@@ -7,13 +7,12 @@ task signCoreJar(type: SignJar) {
     inputFile = outputFile = coreJar.archivePath
 }
 
-task signJar(type: SignJar, dependsOn: signCoreJar) {
+task signJar(type: SignJar, dependsOn: [signCoreJar, reobfJar]) {
     alias = project.property 'signing.mods.keyalias'
     keyStore = project.property 'signing.mods.keystore'
     keyPass = storePass = project.property 'signing.mods.password'
     inputFile = outputFile = jar.archivePath
 }
 
-signJar.dependsOn reobfJar
 jar.dependsOn signCoreJar
 build.dependsOn signJar
