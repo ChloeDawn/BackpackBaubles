@@ -17,6 +17,9 @@ sourceSets {
         compileClasspath += main.compileClasspath
         runtimeClasspath += main.runtimeClasspath
     }
+    main {
+        runtimeClasspath += core.output
+    }
 }
 
 task coreJar(type: Jar) {
