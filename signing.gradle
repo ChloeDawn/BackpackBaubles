@@ -1,0 +1,22 @@
+private def lookup(type) {
+    property 'signing.mods.' + type
+}
+
+ext.fingerprint = lookup 'sha1'
+
+task signCoreJar(type: SignJar) {
+    alias = lookup 'keyalias'
+    keyStore = lookup 'keystore'
+    keyPass = storePass = lookup 'password'
+    inputFile = outputFile = coreJar.archivePath
+}
+
+task signJar(type: SignJar, dependsOn: signCoreJar) {
+    alias = lookup 'keyalias'
+    keyStore = lookup 'keystore'
+    keyPass = storePass = lookup 'password'
+    inputFile = outputFile = jar.archivePath
+}
+
+jar.dependsOn signCoreJar
+build.dependsOn signJar
