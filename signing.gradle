@@ -1,20 +1,16 @@
-private def lookup(type) {
-    property 'signing.mods.' + type
-}
-
-ext.fingerprint = lookup 'sha1'
+ext.fingerprint = property 'signing.mods.sha1'
 
 task signCoreJar(type: SignJar) {
-    alias = lookup 'keyalias'
-    keyStore = lookup 'keystore'
-    keyPass = storePass = lookup 'password'
+    alias = project.property 'signing.mods.keyalias'
+    keyStore = project.property 'signing.mods.keystore'
+    keyPass = storePass = project.property 'signing.mods.password'
     inputFile = outputFile = coreJar.archivePath
 }
 
 task signJar(type: SignJar, dependsOn: signCoreJar) {
-    alias = lookup 'keyalias'
-    keyStore = lookup 'keystore'
-    keyPass = storePass = lookup 'password'
+    alias = project.property 'signing.mods.keyalias'
+    keyStore = project.property 'signing.mods.keystore'
+    keyPass = storePass = project.property 'signing.mods.password'
     inputFile = outputFile = jar.archivePath
 }
 
