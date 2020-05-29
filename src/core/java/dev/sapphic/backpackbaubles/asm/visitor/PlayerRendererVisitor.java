@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package dev.sapphic.backpackbaubles.asm;
+package dev.sapphic.backpackbaubles.asm.visitor;
 
+import dev.sapphic.backpackbaubles.asm.ClassTransformer;
 import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -24,8 +25,8 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.GeneratorAdapter;
 import org.objectweb.asm.commons.Method;
 
-final class PlayerRendererVisitor extends ClassVisitor {
-    PlayerRendererVisitor(final ClassVisitor cv) {
+public final class PlayerRendererVisitor extends ClassVisitor {
+    public PlayerRendererVisitor(final ClassVisitor cv) {
         super(Opcodes.ASM5, cv);
     }
 
@@ -38,10 +39,10 @@ final class PlayerRendererVisitor extends ClassVisitor {
                 public void visitInsn(final int opcode) {
                     if (opcode == Opcodes.RETURN) {
                         this.loadThis();
-                        this.newInstance(Type.getObjectType("dev/sapphic/backpackbaubles/client/BackpackLayer"));
+                        this.newInstance(Type.getObjectType(ClassTransformer.BACKPACK_LAYER));
                         this.dup();
                         this.loadThis();
-                        this.invokeConstructor(Type.getObjectType("dev/sapphic/backpackbaubles/client/BackpackLayer"),
+                        this.invokeConstructor(Type.getObjectType(ClassTransformer.BACKPACK_LAYER),
                             Method.getMethod("void <init> (net.minecraft.client.renderer.entity.RenderPlayer)")
                         );
                         this.invokeVirtual(Type.getObjectType("net/minecraft/client/renderer/entity/RenderPlayer"),

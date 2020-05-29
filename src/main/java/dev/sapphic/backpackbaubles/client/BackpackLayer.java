@@ -16,7 +16,7 @@
 
 package dev.sapphic.backpackbaubles.client;
 
-import dev.sapphic.backpackbaubles.BackpackBaubles;
+import dev.sapphic.backpackbaubles.server.BackpackBaubles;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;

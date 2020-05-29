@@ -1,0 +1,21 @@
+[
+  {
+    "modid": "backpackbaubles",
+    "name": "Backpack Baubles",
+    "description": "Allows for Quark's backpack to be equipped in Baubles' body slot",
+    "version": "$version",
+    "authorList": [ "Chloe Dawn" ],
+    "url": "https://github.com/ChloeDawn/BackpackBaubles",
+    "useDependencyInformation": true,
+    "dependencies": [
+      "quark@[r1.6-179,)",
+      "baubles@[1.5.2,)",
+      "forge@[14.23.5.2847,)"
+    ],
+    "requiredMods": [
+      "quark@[r1.6-179,)",
+      "baubles@[1.5.2,)",
+      "forge@[14.23.5.2847,)"
+    ]
+  }
+]
