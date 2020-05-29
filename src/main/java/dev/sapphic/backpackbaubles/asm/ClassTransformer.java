@@ -17,6 +17,7 @@
 package dev.sapphic.backpackbaubles.asm;
 
 import net.minecraft.launchwrapper.IClassTransformer;
+import org.jetbrains.annotations.Contract;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -25,6 +26,7 @@ import org.objectweb.asm.Opcodes;
 import java.util.function.Function;
 
 public final class ClassTransformer implements IClassTransformer {
+    @Contract(pure = true)
     static boolean isItemStackGetItem(final int opcode, final String owner, final String name, final String desc) {
         return opcode == Opcodes.INVOKEVIRTUAL
             && "net/minecraft/item/ItemStack".equals(owner)

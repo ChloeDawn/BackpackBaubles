@@ -53,6 +53,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Unmodifiable;
 import vazkii.quark.oddities.item.ItemBackpack;
 
 import java.io.File;
@@ -68,6 +70,10 @@ public final class BackpackBaubles extends DummyModContainer {
 
     private static final ResourceLocation CAPABILITY_ID = new ResourceLocation(ID, "capability");
     private static final int BAUBLE_BODY_SLOT = 5;
+
+    private static final ImmutableList<String> PACKAGES = ImmutableList.of(
+        "dev.sapphic.backpackbaubles", "dev.sapphic.backpackbaubles.asm", "dev.sapphic.backpackbaubles.client"
+    );
 
     public BackpackBaubles() {
         super(new ModMetadata());
@@ -128,6 +134,7 @@ public final class BackpackBaubles extends DummyModContainer {
         return provider.getCapability(Objects.requireNonNull(capability, "capability"), null);
     }
 
+    @Contract(pure = true)
     private static boolean isBackpack(final ItemStack stack) {
         return stack.getItem() instanceof ItemBackpack;
     }
@@ -169,32 +176,38 @@ public final class BackpackBaubles extends DummyModContainer {
     }
 
     @Override
-    public List<ArtifactVersion> getDependants() {
+    @Contract(pure = true)
+    public @Unmodifiable List<ArtifactVersion> getDependants() {
         return this.getMetadata().dependants;
     }
 
     @Override
-    public List<ArtifactVersion> getDependencies() {
+    @Contract(pure = true)
+    public @Unmodifiable List<ArtifactVersion> getDependencies() {
         return this.getMetadata().dependencies;
     }
 
     @Override
-    public Set<ArtifactVersion> getRequirements() {
+    @Contract(pure = true)
+    public @Unmodifiable Set<ArtifactVersion> getRequirements() {
         return this.getMetadata().requiredMods;
     }
 
     @Override
+    @Contract(pure = true)
     public File getSource() {
         return LoadingPlugin.getSource();
     }
 
     @Override
+    @Contract(mutates = "param1")
     public boolean registerBus(final EventBus bus, final LoadController controller) {
         bus.register(this);
         return true;
     }
 
     @Override
+    @Contract(pure = true)
     public @Nullable Certificate getSigningCertificate() {
         final @Nullable CodeSource source = BackpackBaubles.class.getProtectionDomain().getCodeSource();
         final Certificate @Nullable [] certificates = source != null ? source.getCertificates() : null;
@@ -202,17 +215,15 @@ public final class BackpackBaubles extends DummyModContainer {
     }
 
     @Override
-    public List<String> getOwnedPackages() {
-        return ImmutableList.of(
-            "dev.sapphic.backpackbaubles",
-            "dev.sapphic.backpackbaubles.asm",
-            "dev.sapphic.backpackbaubles.client"
-        );
+    @Contract(pure = true)
+    public @Unmodifiable List<String> getOwnedPackages() {
+        return PACKAGES;
     }
 
     private static final class BaubleHolder {
         private static final IBauble BACKPACK_BAUBLE = new IBauble() {
             @Override
+            @Contract(pure = true)
             public BaubleType getBaubleType(final ItemStack stack) {
                 return BaubleType.BODY;
             }
@@ -239,12 +250,14 @@ public final class BackpackBaubles extends DummyModContainer {
 
         private static final ICapabilityProvider CAPABILITY_PROVIDER = new ICapabilityProvider() {
             @Override
+            @Contract(value = "null, _ -> fail", pure = true)
             public boolean hasCapability(final Capability<?> capability, final @Nullable EnumFacing side) {
                 return Objects.requireNonNull(BaublesCapabilities.CAPABILITY_ITEM_BAUBLE) == capability;
             }
 
             @Override
             @SuppressWarnings("unchecked")
+            @Contract(value = "null, _ -> fail", pure = true)
             public <T> @Nullable T getCapability(final Capability<T> capability, final @Nullable EnumFacing side) {
                 return this.hasCapability(capability, side) ? (T) BACKPACK_BAUBLE : null;
             }

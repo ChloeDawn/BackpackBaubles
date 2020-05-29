@@ -32,7 +32,7 @@ repositories {
 
 dependencies {
     implementation 'org.jetbrains:annotations:19.0.0'
-    implementation 'org.checkerframework:checker-qual:3.3.0'
+    implementation 'org.checkerframework:checker-qual:3.4.0'
     deobfCompile 'curse.maven:baubles:2518667'
     deobfCompile 'curse.maven:quark:2924091'
     deobfCompile 'curse.maven:autoreglib:2746011'

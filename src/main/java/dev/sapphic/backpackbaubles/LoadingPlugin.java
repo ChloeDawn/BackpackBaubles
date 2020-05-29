@@ -29,6 +29,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.Contract;
 
 import java.io.File;
 import java.security.CodeSource;
@@ -76,21 +77,25 @@ public final class LoadingPlugin implements IFMLLoadingPlugin {
         }
     }
 
+    @Contract(pure = true)
     static File getSource() {
         return source;
     }
 
     @Override
+    @Contract(value = " -> new", pure = true)
     public String[] getASMTransformerClass() {
         return new String[] { "dev.sapphic.backpackbaubles.asm.ClassTransformer" };
     }
 
     @Override
+    @Contract(pure = true)
     public String getModContainerClass() {
         return "dev.sapphic.backpackbaubles.BackpackBaubles";
     }
 
     @Override
+    @Contract(value = " -> null", pure = true)
     public @Nullable String getSetupClass() {
         return null;
     }
@@ -102,6 +107,7 @@ public final class LoadingPlugin implements IFMLLoadingPlugin {
     }
 
     @Override
+    @Contract(value = " -> null", pure = true)
     public @Nullable String getAccessTransformerClass() {
         return null;
     }

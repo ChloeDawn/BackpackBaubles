@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import org.jetbrains.annotations.Contract;
 import vazkii.quark.oddities.client.model.ModelBackpack;
 
 public final class BackpackLayer implements LayerRenderer<AbstractClientPlayer> {
@@ -48,6 +49,7 @@ public final class BackpackLayer implements LayerRenderer<AbstractClientPlayer> 
     }
 
     @Override
+    @Contract(value = " -> false", pure = true)
     public boolean shouldCombineTextures() {
         return false;
     }
