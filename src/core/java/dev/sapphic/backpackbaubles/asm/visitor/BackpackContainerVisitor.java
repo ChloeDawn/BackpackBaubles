@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package dev.sapphic.backpackbaubles.asm;
+package dev.sapphic.backpackbaubles.asm.visitor;
 
+import dev.sapphic.backpackbaubles.asm.ClassTransformer;
+import org.jetbrains.annotations.Contract;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
@@ -24,9 +26,17 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.GeneratorAdapter;
 import org.objectweb.asm.commons.Method;
 
-final class BackpackContainerVisitor extends ClassVisitor {
-    BackpackContainerVisitor(final ClassWriter writer) {
+public final class BackpackContainerVisitor extends ClassVisitor {
+    public BackpackContainerVisitor(final ClassWriter writer) {
         super(Opcodes.ASM5, writer);
+    }
+
+    @Contract(pure = true)
+    private static boolean isItemStackGetItem(final int opcode, final String owner, final String name, final String desc) {
+        return opcode == Opcodes.INVOKEVIRTUAL
+            && "net/minecraft/item/ItemStack".equals(owner)
+            && ("func_77973_b".equals(name) || "getItem".equals(name))
+            && "()Lnet/minecraft/item/Item;".equals(desc);
     }
 
     @Override
@@ -36,11 +46,10 @@ final class BackpackContainerVisitor extends ClassVisitor {
             return new GeneratorAdapter(Opcodes.ASM5, mv, access, name, desc) {
                 @Override
                 public void visitMethodInsn(final int opcode, final String owner, final String name, final String desc, final boolean itf) {
-                    if (ClassTransformer.isItemStackGetItem(opcode, owner, name, desc)) {
+                    if (isItemStackGetItem(opcode, owner, name, desc)) {
                         this.loadArg(0); // player
-                        this.invokeStatic(Type.getObjectType("dev/sapphic/backpackbaubles/BackpackBaubles"),
-                            Method.getMethod("net.minecraft.item.ItemStack getBackpackStack " +
-                                "(net.minecraft.item.ItemStack, net.minecraft.entity.EntityLivingBase)")
+                        this.invokeStatic(Type.getObjectType(ClassTransformer.BACKPACK_BAUBLES),
+                            Method.getMethod(ClassTransformer.GET_BACKPACK_STACK)
                         );
                         this.storeLocal(5, Type.getObjectType("net/minecraft/item/ItemStack"));
                         this.loadLocal(5, Type.getObjectType("net/minecraft/item/ItemStack"));

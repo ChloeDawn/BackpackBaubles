@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package dev.sapphic.backpackbaubles.asm;
+package dev.sapphic.backpackbaubles.asm.visitor;
 
+import dev.sapphic.backpackbaubles.asm.ClassTransformer;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
@@ -24,8 +25,8 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.GeneratorAdapter;
 import org.objectweb.asm.commons.Method;
 
-final class BackpackItemVisitor extends ClassVisitor {
-    BackpackItemVisitor(final ClassWriter writer) {
+public final class BackpackItemVisitor extends ClassVisitor {
+    public BackpackItemVisitor(final ClassWriter writer) {
         super(Opcodes.ASM5, writer);
     }
 
@@ -43,7 +44,7 @@ final class BackpackItemVisitor extends ClassVisitor {
         final Label exit = mg.newLabel();
 
         mg.loadArg(2); // entity
-        mg.invokeStatic(Type.getObjectType("dev/sapphic/backpackbaubles/BackpackBaubles"),
+        mg.invokeStatic(Type.getObjectType(ClassTransformer.BACKPACK_BAUBLES),
             Method.getMethod("boolean hasNoBaubleBackpack (net.minecraft.entity.Entity)")
         );
         mg.ifZCmp(Opcodes.IFEQ, ifeq);

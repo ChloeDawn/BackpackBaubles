@@ -16,23 +16,22 @@
 
 package dev.sapphic.backpackbaubles.asm;
 
+import dev.sapphic.backpackbaubles.asm.visitor.BackpackContainerVisitor;
+import dev.sapphic.backpackbaubles.asm.visitor.BackpackFeatureVisitor;
+import dev.sapphic.backpackbaubles.asm.visitor.BackpackItemVisitor;
+import dev.sapphic.backpackbaubles.asm.visitor.PlayerRendererVisitor;
 import net.minecraft.launchwrapper.IClassTransformer;
-import org.jetbrains.annotations.Contract;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
 
 import java.util.function.Function;
 
 public final class ClassTransformer implements IClassTransformer {
-    @Contract(pure = true)
-    static boolean isItemStackGetItem(final int opcode, final String owner, final String name, final String desc) {
-        return opcode == Opcodes.INVOKEVIRTUAL
-            && "net/minecraft/item/ItemStack".equals(owner)
-            && ("func_77973_b".equals(name) || "getItem".equals(name))
-            && "()Lnet/minecraft/item/Item;".equals(desc);
-    }
+    public static final String BACKPACK_BAUBLES = "dev/sapphic/backpackbaubles/server/BackpackBaubles";
+    public static final String BACKPACK_LAYER = "dev/sapphic/backpackbaubles/client/BackpackLayer";
+    public static final String GET_BACKPACK_STACK = "net.minecraft.item.ItemStack getBackpackStack " +
+        "(net.minecraft.item.ItemStack, net.minecraft.entity.EntityLivingBase)";
 
     private static byte[] transform(final byte[] bytes, final Function<ClassWriter, ClassVisitor> visitor) {
         final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES);

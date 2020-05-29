@@ -8,6 +8,22 @@ group = 'dev.sapphic'
 version = '0.1.0'
 sourceCompatibility = 1.8
 
+def loadingPlugin = 'dev.sapphic.backpackbaubles.asm.LoadingPlugin'
+
+sourceSets {
+    core {
+        java.srcDir file('src/core/java')
+        resources.srcDir file('src/core/resources')
+        compileClasspath += main.compileClasspath + main.output
+        runtimeClasspath += main.runtimeClasspath + main.output
+    }
+}
+
+task coreJar(type: Jar) {
+    from sourceSets.core.allJava
+    classifier = 'core'
+}
+
 if (hasProperty('signing.mods.keystore')) {
     apply from: 'signing.gradle'
 }
@@ -16,11 +32,11 @@ minecraft {
     version = '1.12.2-14.23.5.2847'
     mappings = 'stable_39'
     runDir = 'run'
-    coreMod = 'dev.sapphic.backpackbaubles.LoadingPlugin'
+    clientJvmArgs = ["-Dfml.coreMods.load=$loadingPlugin"]
+    serverJvmArgs = ["-Dfml.coreMods.load=$loadingPlugin"]
     replaceIn 'BackpackBaubles.java'
     replace '$version': project.version
     if (project.hasProperty('signing.mods.keystore')) {
-        replaceIn 'LoadingPlugin.java'
         replace '$fingerprint': fingerprint
     }
 }
@@ -45,4 +61,21 @@ compileJava {
     options.verbose = true
     options.encoding = 'UTF-8'
     options.compilerArgs << '-Xlint:all'
+}
+
+coreJar {
+    manifest.attributes FMLCorePlugin: loadingPlugin
+}
+
+artifacts {
+    archives coreJar
+}
+
+jar {
+    dependsOn coreJar
+    manifest.attributes ContainedDeps: coreJar.archivePath.name
+    from(coreJar.archivePath) {
+        include '*'
+        into 'META-INF/libraries'
+    }
 }

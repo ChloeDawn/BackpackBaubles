@@ -15,7 +15,7 @@
  */
 
 @DefaultQualifier(NonNull.class)
-package dev.sapphic.backpackbaubles;
+package dev.sapphic.backpackbaubles.server;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.framework.qual.DefaultQualifier;

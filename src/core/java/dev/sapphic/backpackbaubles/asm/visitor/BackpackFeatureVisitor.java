@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package dev.sapphic.backpackbaubles.asm;
+package dev.sapphic.backpackbaubles.asm.visitor;
 
+import dev.sapphic.backpackbaubles.asm.ClassTransformer;
+import org.jetbrains.annotations.Contract;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
@@ -24,9 +26,17 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.GeneratorAdapter;
 import org.objectweb.asm.commons.Method;
 
-final class BackpackFeatureVisitor extends ClassVisitor {
-    BackpackFeatureVisitor(final ClassWriter writer) {
+public final class BackpackFeatureVisitor extends ClassVisitor {
+    public BackpackFeatureVisitor(final ClassWriter writer) {
         super(Opcodes.ASM5, writer);
+    }
+
+    @Contract(pure = true)
+    private static boolean isItemStackGetItem(final int opcode, final String owner, final String name, final String desc) {
+        return opcode == Opcodes.INVOKEVIRTUAL
+            && "net/minecraft/item/ItemStack".equals(owner)
+            && ("func_77973_b".equals(name) || "getItem".equals(name))
+            && "()Lnet/minecraft/item/Item;".equals(desc);
     }
 
     @Override
@@ -38,11 +48,10 @@ final class BackpackFeatureVisitor extends ClassVisitor {
                     return new GeneratorAdapter(Opcodes.ASM5, mv, access, name, desc) {
                         @Override
                         public void visitMethodInsn(final int opcode, final String owner, final String name, final String desc, final boolean itf) {
-                            if (ClassTransformer.isItemStackGetItem(opcode, owner, name, desc)) {
+                            if (isItemStackGetItem(opcode, owner, name, desc)) {
                                 this.loadLocal(1, Type.getObjectType("net/minecraft/entity/EntityLiving"));
-                                this.invokeStatic(Type.getObjectType("dev/sapphic/backpackbaubles/BackpackBaubles"),
-                                    Method.getMethod("net.minecraft.item.ItemStack getBackpackStack " +
-                                        "(net.minecraft.item.ItemStack, net.minecraft.entity.EntityLivingBase)")
+                                this.invokeStatic(Type.getObjectType(ClassTransformer.BACKPACK_BAUBLES),
+                                    Method.getMethod(ClassTransformer.GET_BACKPACK_STACK)
                                 );
                                 this.storeLocal(2, Type.getObjectType("net/minecraft/item/ItemStack"));
                                 this.loadLocal(2, Type.getObjectType("net/minecraft/item/ItemStack"));
@@ -56,9 +65,8 @@ final class BackpackFeatureVisitor extends ClassVisitor {
                         public void visitVarInsn(final int opcode, final int var) {
                             if (opcode == Opcodes.ALOAD && var == 1) {
                                 this.loadLocal(2, Type.getObjectType("net/minecraft/entity/EntityLiving"));
-                                this.invokeStatic(Type.getObjectType("dev/sapphic/backpackbaubles/BackpackBaubles"),
-                                    Method.getMethod("net.minecraft.item.ItemStack getBackpackStack " +
-                                        "(net.minecraft.item.ItemStack, net.minecraft.entity.EntityLivingBase)")
+                                this.invokeStatic(Type.getObjectType(ClassTransformer.BACKPACK_BAUBLES),
+                                    Method.getMethod(ClassTransformer.GET_BACKPACK_STACK)
                                 );
                                 this.storeLocal(3, Type.getObjectType("net/minecraft/item/ItemStack"));
                                 this.loadLocal(3, Type.getObjectType("net/minecraft/item/ItemStack"));
