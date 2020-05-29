@@ -23,7 +23,7 @@ sourceSets {
 }
 
 task coreJar(type: Jar) {
-    from sourceSets.core.allJava
+    from sourceSets.core.output
     classifier = 'core'
 }
 
