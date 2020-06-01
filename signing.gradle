@@ -1,3 +1,5 @@
+apply plugin: 'signing'
+
 def sha1 = property 'signing.mods.sha1'
 def keyalias = property 'signing.mods.keyalias'
 def keystore = property 'signing.mods.keystore'
@@ -23,3 +25,9 @@ task signJar(type: SignJar, dependsOn: [signCoreJar, reobfJar]) {
 
 jar.dependsOn signCoreJar
 build.dependsOn signJar
+
+signing {
+    required = hasProperty('signing.gpg.keyId')
+    useGpgCmd()
+    sign configurations.archives
+}
