@@ -9,11 +9,13 @@
     "useDependencyInformation": true,
     "dependencies": [
       "quark@[r1.6-179,)",
+      "quarkoddities@[1,)",
       "baubles@[1.5.2,)",
       "forge@[14.23.5.2847,)"
     ],
     "requiredMods": [
       "quark@[r1.6-179,)",
+      "quarkoddities@[1,)",
       "baubles@[1.5.2,)",
       "forge@[14.23.5.2847,)"
     ]
