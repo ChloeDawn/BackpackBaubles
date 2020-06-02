@@ -2,7 +2,7 @@
   {
     "modid": "backpackbaubles",
     "name": "Backpack Baubles",
-    "description": "Allows for Quark's backpack to be equipped in Baubles' body slot",
+    "description": "Allows for Quark Oddities' backpack to be equipped in Baubles' body slot",
     "version": "$version",
     "authorList": [ "Chloe Dawn" ],
     "url": "https://github.com/ChloeDawn/BackpackBaubles",
